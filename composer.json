@@ -1,0 +1,7 @@
+{
+  "name": "ogpn/ogpn-bot",
+  "description": "OGPN-BOT 2.0 - découverte Common Crawl et analyse distribuée",
+  "type": "project",
+  "require": {"php": ">=8.2", "ext-pdo": "*", "ext-json": "*", "ext-mbstring": "*", "ext-openssl": "*", "ext-curl": "*"},
+  "autoload": {"psr-4": {"Ogpn\Bot\": "src/"}}
+}
