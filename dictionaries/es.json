@@ -1,0 +1,45 @@
+{
+  "technology_and_computing": [
+    "software",
+    "digital",
+    "plataforma",
+    "aplicación"
+  ],
+  "education": [
+    "formación",
+    "curso",
+    "escuela",
+    "universidad"
+  ],
+  "travel": [
+    "hotel",
+    "turismo",
+    "viaje",
+    "vacaciones"
+  ],
+  "personal_finance": [
+    "banco",
+    "seguro",
+    "crédito",
+    "inversión"
+  ],
+  "food_and_drink": [
+    "restaurante",
+    "menú",
+    "alimentos",
+    "receta"
+  ],
+  "online_shop": [
+    "tienda",
+    "carrito",
+    "pedido",
+    "entrega",
+    "precio"
+  ],
+  "transport": [
+    "transporte",
+    "carga",
+    "logística",
+    "ferrocarril"
+  ]
+}

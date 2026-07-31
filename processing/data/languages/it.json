@@ -1,0 +1,67 @@
+{
+  "schema": "ogpn-language-dictionary-v1",
+  "version": "2026-07-28",
+  "language": "it",
+  "terms": {
+    "technology": [
+      "software",
+      "digitale",
+      "piattaforma",
+      "applicazione"
+    ],
+    "commerce": [
+      "negozio",
+      "carrello",
+      "ordine",
+      "consegna",
+      "prezzo"
+    ],
+    "education": [
+      "formazione",
+      "corso",
+      "scuola",
+      "università"
+    ],
+    "travel": [
+      "hotel",
+      "turismo",
+      "viaggio",
+      "vacanza"
+    ],
+    "transport": [
+      "trasporto",
+      "merci",
+      "logistica",
+      "ferrovia"
+    ],
+    "health": [
+      "salute",
+      "ospedale",
+      "clinica",
+      "medico"
+    ],
+    "government": [
+      "amministrazione",
+      "comune",
+      "ministero"
+    ],
+    "media": [
+      "notizie",
+      "giornale",
+      "stampa",
+      "rivista"
+    ],
+    "finance": [
+      "banca",
+      "assicurazione",
+      "credito",
+      "investimento"
+    ],
+    "food": [
+      "ristorante",
+      "menù",
+      "alimentazione",
+      "ricetta"
+    ]
+  }
+}

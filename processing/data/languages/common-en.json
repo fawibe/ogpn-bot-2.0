@@ -1,0 +1,100 @@
+{
+  "schema": "ogpn-language-common-v2",
+  "version": "2026-07-28",
+  "terms": {
+    "technology": [
+      "api",
+      "saas",
+      "software",
+      "cloud computing",
+      "web hosting",
+      "data center",
+      "cybersecurity",
+      "artificial intelligence",
+      "machine learning"
+    ],
+    "commerce": [
+      "shop",
+      "store",
+      "cart",
+      "checkout",
+      "order online",
+      "delivery",
+      "fashion",
+      "clothing",
+      "shoes"
+    ],
+    "education": [
+      "training",
+      "course",
+      "academy",
+      "university",
+      "school",
+      "learning",
+      "certification"
+    ],
+    "travel": [
+      "hotel",
+      "accommodation",
+      "booking",
+      "destination",
+      "tourism",
+      "holiday",
+      "host",
+      "guest"
+    ],
+    "transport": [
+      "train",
+      "railway",
+      "rail",
+      "bus",
+      "tram",
+      "ticket",
+      "timetable",
+      "station",
+      "public transport",
+      "freight",
+      "logistics",
+      "cargo"
+    ],
+    "health": [
+      "health",
+      "hospital",
+      "clinic",
+      "medical",
+      "doctor",
+      "patient"
+    ],
+    "government": [
+      "government",
+      "ministry",
+      "municipality",
+      "public service",
+      "administration"
+    ],
+    "media": [
+      "news",
+      "magazine",
+      "press",
+      "journal",
+      "podcast"
+    ],
+    "finance": [
+      "bank",
+      "banking",
+      "insurance",
+      "credit",
+      "loan",
+      "mortgage",
+      "investment",
+      "savings"
+    ],
+    "food": [
+      "restaurant",
+      "menu",
+      "catering",
+      "food",
+      "recipe"
+    ]
+  }
+}

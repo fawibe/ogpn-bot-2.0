@@ -1,0 +1,6 @@
+<?php
+declare(strict_types=1);
+$root=dirname(__DIR__);$manifest=json_decode((string)file_get_contents($root.'/dictionaries/manifest.json'),true,512,JSON_THROW_ON_ERROR);$categories=json_decode((string)file_get_contents($root.'/dictionaries/categories.json'),true,512,JSON_THROW_ON_ERROR);$valid=array_column($categories['categories']??[],'slug');$valid=array_fill_keys($valid,true);$errors=0;
+$files=['common-minimal.json'];foreach($manifest['languages']??[] as $meta)$files[]=$meta['file'];
+foreach(array_unique($files) as $file){$path=$root.'/dictionaries/'.$file;$data=json_decode((string)file_get_contents($path),true,512,JSON_THROW_ON_ERROR);$count=0;$terms=0;foreach($data as $slug=>$list){if(str_starts_with((string)$slug,'_'))continue;if(!isset($valid[$slug])){echo "[FAIL] $file catégorie inconnue: $slug\n";$errors++;continue;}if(!is_array($list)){echo "[FAIL] $file liste invalide: $slug\n";$errors++;continue;}$clean=[];foreach($list as $term){$term=trim((string)$term);if($term==='')continue;$key=function_exists('mb_strtolower')?mb_strtolower($term,'UTF-8'):strtolower($term);if(isset($clean[$key])){echo "[FAIL] $file doublon: $slug / $term\n";$errors++;}$clean[$key]=true;$terms++;}$count++;}echo "[OK]   $file : $count catégories, $terms termes\n";}
+exit($errors?1:0);

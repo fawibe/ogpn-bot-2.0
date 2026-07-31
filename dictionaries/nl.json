@@ -1,0 +1,45 @@
+{
+  "technology_and_computing": [
+    "software",
+    "digitaal",
+    "platform",
+    "applicatie"
+  ],
+  "education": [
+    "opleiding",
+    "cursus",
+    "school",
+    "universiteit"
+  ],
+  "travel": [
+    "hotel",
+    "toerisme",
+    "reis",
+    "vakantie"
+  ],
+  "personal_finance": [
+    "bank",
+    "verzekering",
+    "krediet",
+    "investering"
+  ],
+  "food_and_drink": [
+    "restaurant",
+    "menu",
+    "voeding",
+    "recept"
+  ],
+  "online_shop": [
+    "winkel",
+    "winkelmand",
+    "bestellen",
+    "levering",
+    "prijs"
+  ],
+  "transport": [
+    "transport",
+    "vracht",
+    "logistiek",
+    "spoor"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "schema": "ogpn-dictionary-manifest-v1",
+  "version": "2026-07-28-consolidated",
+  "common_minimal": {
+    "file": "common-minimal.json",
+    "categories": 31,
+    "status": "complete"
+  },
+  "languages": {
+    "fr": {
+      "file": "fr.json",
+      "categories": 31,
+      "status": "complete"
+    },
+    "en": {
+      "file": "en.json",
+      "categories": 31,
+      "status": "complete"
+    },
+    "tr": {
+      "file": "tr.json",
+      "categories": 30,
+      "status": "complete_with_documented_gap"
+    },
+    "de": {
+      "file": "de.json",
+      "categories": 7,
+      "status": "partial"
+    },
+    "es": {
+      "file": "es.json",
+      "categories": 7,
+      "status": "partial"
+    },
+    "nl": {
+      "file": "nl.json",
+      "categories": 7,
+      "status": "partial"
+    },
+    "it": {
+      "file": "it.json",
+      "categories": 7,
+      "status": "partial"
+    },
+    "pt": {
+      "file": "pt.json",
+      "categories": 7,
+      "status": "partial"
+    }
+  }
+}

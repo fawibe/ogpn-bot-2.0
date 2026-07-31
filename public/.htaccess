@@ -1,0 +1,24 @@
+DirectoryIndex index.php
+Options -Indexes
+
+<IfModule mod_headers.c>
+ Header always set X-Content-Type-Options "nosniff"
+ Header always set X-Frame-Options "DENY"
+ Header always set Referrer-Policy "no-referrer"
+ Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>
+
+<FilesMatch "^(?:\.env|composer\.(?:json|lock)|VERSION|.*\.(?:sql|log|bak))$">
+ Require all denied
+</FilesMatch>
+
+# cron-worker.php : point d'entrée URL pour les webcrons (Infomaniak).
+# Double protection : Basic Auth ici (fichier storage/secrets/htpasswd-cron,
+# géré séparément sur le serveur, jamais livré dans les zips) + le jeton de
+# worker en second niveau (?token=...), vérifié côté applicatif.
+<Files "cron-worker.php">
+ AuthType Basic
+ AuthName "OGPN-BOT cron"
+ AuthUserFile /home/clients/CHEMIN_A_ADAPTER/storage/secrets/htpasswd-cron
+ Require valid-user
+</Files>

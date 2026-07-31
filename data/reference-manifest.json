@@ -1,0 +1,51 @@
+{
+    "format": 1,
+    "engine_version": "2.0.0-rc1-consolidated",
+    "generated_at": "2026-07-28T12:03:17+00:00",
+    "files": {
+        "data/providers.json": {
+            "sha256": "e2eff75d8317cd08b9902b3ec6f5b69291a8eccf87a3f74107d417bc7b1dbd8c",
+            "bytes": 22246
+        },
+        "dictionaries/categories.json": {
+            "sha256": "c98d0352fccdc6f5999df1aab055d27f4acd56d026112f59f3d68442dcb883c8",
+            "bytes": 3448
+        },
+        "dictionaries/common-minimal.json": {
+            "sha256": "b70d958a15ac2cb967e4d553577c1c86ec2bab8e3493b7b99480650a91688b8c",
+            "bytes": 4091
+        },
+        "dictionaries/fr.json": {
+            "sha256": "56c7a8981fd0fae97d2096df6db7ac9c5c10caddec74c33269eee9580e20086e",
+            "bytes": 22712
+        },
+        "dictionaries/en.json": {
+            "sha256": "7c311aa891a8d13a691de26e4e0f331ef14ee45f1917916a664f896a78b34a3e",
+            "bytes": 10634
+        },
+        "dictionaries/tr.json": {
+            "sha256": "80d71b4a8beecb30589647f2aa3b6431463a6f35735171872745ffd7ecbd0b3c",
+            "bytes": 7048
+        },
+        "dictionaries/de.json": {
+            "sha256": "22548b7efd3b46d24fa41a3d9c1229f54462b2c2435f7d5fb51f80e2b17eb6d0",
+            "bytes": 633
+        },
+        "dictionaries/es.json": {
+            "sha256": "73cfd6d15d9f43c8fe493c842fd091ad097a1338609f6bc6cd7d41316c76a353",
+            "bytes": 632
+        },
+        "dictionaries/nl.json": {
+            "sha256": "b4017a24e1b5973b928245f32999edc4cd97035faa0265ded8658adf96d1d000",
+            "bytes": 627
+        },
+        "dictionaries/it.json": {
+            "sha256": "79f3a0dd05c309693c8edac162398f28432dc84cf235f24ed632a844326ac42a",
+            "bytes": 643
+        },
+        "dictionaries/pt.json": {
+            "sha256": "1d827e044f8cfd40122569b53d55d3351cd77a28eeb321db4564f8e8fa9f34d1",
+            "bytes": 635
+        }
+    }
+}

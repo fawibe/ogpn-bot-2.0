@@ -1,0 +1,103 @@
+{
+  "schema": "ogpn-language-dictionary-v1",
+  "version": "2026-07-28-alpha4.2",
+  "language": "fr",
+  "terms": {
+    "technology": [
+      "logiciel",
+      "informatique",
+      "hébergement web",
+      "centre de données",
+      "cybersécurité",
+      "intelligence artificielle",
+      "cloud computing",
+      "saas"
+    ],
+    "commerce": [
+      "boutique",
+      "panier",
+      "commander",
+      "livraison",
+      "prix",
+      "paiement",
+      "acheter",
+      "vente en ligne",
+      "mode",
+      "vêtements",
+      "chaussures"
+    ],
+    "education": [
+      "formation",
+      "cours",
+      "école",
+      "université",
+      "apprentissage",
+      "certification"
+    ],
+    "travel": [
+      "hôtel",
+      "tourisme",
+      "voyage",
+      "vacances",
+      "destination",
+      "hébergement",
+      "séjour",
+      "logement",
+      "hôte",
+      "voyageur"
+    ],
+    "transport": [
+      "transport",
+      "fret",
+      "logistique",
+      "cargaison",
+      "ferroviaire",
+      "train",
+      "bus",
+      "tram",
+      "billet",
+      "horaire",
+      "gare",
+      "transport public",
+      "mobilité"
+    ],
+    "health": [
+      "santé",
+      "hôpital",
+      "clinique",
+      "médecin",
+      "patient"
+    ],
+    "government": [
+      "administration",
+      "commune",
+      "ministère",
+      "service public"
+    ],
+    "media": [
+      "actualité",
+      "journal",
+      "presse",
+      "magazine"
+    ],
+    "finance": [
+      "banque",
+      "assurance",
+      "crédit",
+      "investissement",
+      "bancaire",
+      "compte bancaire",
+      "épargne",
+      "prêt",
+      "hypothèque",
+      "placement"
+    ],
+    "food": [
+      "restaurant",
+      "menu",
+      "traiteur",
+      "alimentation",
+      "recette"
+    ]
+  }
+}

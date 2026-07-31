@@ -1,0 +1,20 @@
+name: OGPN-BOT Worker
+on:
+  schedule:
+    - cron: '7,37 * * * *'
+  workflow_dispatch:
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: curl, intl, mbstring
+      - run: php worker/run.php
+        env:
+          OGPN_API_URL: ${{ vars.OGPN_API_URL }}
+          OGPN_API_TOKEN: ${{ secrets.OGPN_API_TOKEN }}
+          OGPN_WORKER_ID: github-1

@@ -1,0 +1,67 @@
+{
+  "schema": "ogpn-language-dictionary-v1",
+  "version": "2026-07-28",
+  "language": "nl",
+  "terms": {
+    "technology": [
+      "software",
+      "digitaal",
+      "platform",
+      "applicatie"
+    ],
+    "commerce": [
+      "winkel",
+      "winkelmand",
+      "bestellen",
+      "levering",
+      "prijs"
+    ],
+    "education": [
+      "opleiding",
+      "cursus",
+      "school",
+      "universiteit"
+    ],
+    "travel": [
+      "hotel",
+      "toerisme",
+      "reis",
+      "vakantie"
+    ],
+    "transport": [
+      "transport",
+      "vracht",
+      "logistiek",
+      "spoor"
+    ],
+    "health": [
+      "gezondheid",
+      "ziekenhuis",
+      "kliniek",
+      "arts"
+    ],
+    "government": [
+      "overheid",
+      "gemeente",
+      "ministerie"
+    ],
+    "media": [
+      "nieuws",
+      "krant",
+      "pers",
+      "tijdschrift"
+    ],
+    "finance": [
+      "bank",
+      "verzekering",
+      "krediet",
+      "investering"
+    ],
+    "food": [
+      "restaurant",
+      "menu",
+      "voeding",
+      "recept"
+    ]
+  }
+}

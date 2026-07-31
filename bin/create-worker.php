@@ -1,0 +1,7 @@
+<?php
+declare(strict_types=1);require dirname(__DIR__).'/vendor/autoload.php';use Ogpn\Bot\Bootstrap;
+if($argc<5){fwrite(STDERR,"Usage: php bin/create-worker.php ID PLATFORM ROLE CAPACITY [MAX_RUNS_PER_DAY]\n");exit(2);}[$x,$id,$platform,$role,$capacity]=$argv;
+$maxRuns=isset($argv[5])&&$argv[5]!=='' ? max(1,(int)$argv[5]) : null;
+if(!preg_match('/^[a-z0-9._-]{2,100}$/i',$id)||!in_array($role,['discovery','scan','auto'],true)||!in_array($capacity,['low','medium','high'],true)){fwrite(STDERR,"Paramètres invalides.\n");exit(2);}
+$token=bin2hex(random_bytes(32));$perms=['worker.plan'];if(in_array($role,['discovery','auto'],true))array_push($perms,'discovery.claim','discovery.ingest','discovery.fail');if(in_array($role,['scan','auto'],true))array_push($perms,'scan.claim','scan.ingest','scan.fail');
+$s=Bootstrap::pdo()->prepare('INSERT INTO v2_workers(worker_id,platform,preferred_role,capacity,token_hash,permissions,max_runs_per_day) VALUES(?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE platform=VALUES(platform),preferred_role=VALUES(preferred_role),capacity=VALUES(capacity),token_hash=VALUES(token_hash),permissions=VALUES(permissions),max_runs_per_day=VALUES(max_runs_per_day),enabled=1');$s->execute([$id,$platform,$role,$capacity,hash('sha256',$token),json_encode($perms),$maxRuns]);echo "Worker: $id\nToken (affiché une seule fois): $token\n".($maxRuns!==null?"Plafond : $maxRuns runs/jour\n":"Plafond : illimité\n");

@@ -1,0 +1,10 @@
+/storage/secrets/*.php
+!/storage/secrets/.gitkeep
+/storage/logs/*
+!/storage/logs/.gitkeep
+/storage/cache/*
+!/storage/cache/.gitkeep
+/storage/reports/*
+!/storage/reports/.gitkeep
+.env
+*.log

@@ -1,0 +1,29 @@
+<?php
+declare(strict_types=1);
+return [
+ 'app'=>['name'=>'OGPN-BOT','version'=>'2.0.0-alpha5-consolidated','default_language'=>'fr','secondary_language'=>'en'],
+ 'queue'=>['high_threshold'=>20000,'low_threshold'=>12000,'priority_tlds'=>['fr','be','lu','ch','mc'],'reservation_ttl'=>1800],
+ 'discovery'=>[
+   'enabled'=>true,
+   'crawl_index_url'=>'https://index.commoncrawl.org/collinfo.json',
+   'allowed_tlds'=>['eu','de','ad','at','be','by','ba','bg','cy','hr','dk','es','ee','fi','fr','ge','gr','hu','ie','is','it','lv','li','lt','lu','mk','mt','md','mc','me','no','nl','pl','pt','cz','ro','uk','gb','sm','rs','sk','si','se','ch','ua','va','fo','gl','gg','je','im','gi','ax','gent'],
+   'jobs_buffer_per_tld'=>2,
+   'max_urls_per_job'=>25000,
+ ],
+ 'rescan'=>['success_days'=>30,'temporary_error_hours'=>24,'not_found_days'=>7,'unreachable_days'=>90],
+ 'capacities'=>[
+  'low'=>['max_runtime_seconds'=>40,'max_cc_pages'=>1,'scan_chunk_size'=>5,'max_scan_domains'=>15,'max_concurrency'=>1],
+  'medium'=>['max_runtime_seconds'=>240,'max_cc_pages'=>1,'scan_chunk_size'=>15,'max_scan_domains'=>45,'max_concurrency'=>2],
+  'high'=>['max_runtime_seconds'=>540,'max_cc_pages'=>1,'scan_chunk_size'=>25,'max_scan_domains'=>100,'max_concurrency'=>4],
+ ],
+ 'security'=>[
+   'request_ttl_seconds'=>300,
+   'max_body_bytes'=>16777216,
+   'max_cc_response_bytes'=>16777216,
+   'max_scan_response_bytes'=>2097152,
+   'max_redirects'=>5,
+   'connect_timeout'=>8,
+   'request_timeout'=>20,
+   'api_rate_limit_per_minute'=>120,
+ ],
+];
