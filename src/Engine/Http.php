@@ -256,10 +256,24 @@ class Http
         $multiHandle = curl_multi_init();
         /** @var array<int, array{0: string, 1: string, 2: \CurlHandle, 3: RequestSpec}> $handleMap */
         $handleMap = [];
+        /** @var array<string, array<string, array{0: FetchResult, 1: RequestSpec}>> $results */
+        $results = [];
 
         foreach ($requestsByDomain as $domain => $requests) {
             foreach ($requests as $key => $spec) {
-                $curlHandle = $this->buildCurlHandle($spec);
+                // buildCurlHandle() valide l'URL (NetworkGuard : DNS, SSRF...)
+                // avant même d'ouvrir une connexion. Une erreur ici (DNS cassé,
+                // hôte privé...) ne concerne QUE cette requête précise — elle ne
+                // doit jamais faire échouer les autres domaines du même round.
+                // Sans ce try/catch, un seul domaine à la résolution DNS cassée
+                // faisait perdre tous les résultats du lot entier (voir
+                // PATCH-DNS-BATCH-ISOLATION.md).
+                try {
+                    $curlHandle = $this->buildCurlHandle($spec);
+                } catch (\Throwable $e) {
+                    $results[$domain][$key] = [FetchResult::error($spec->url, $e->getMessage()), $spec];
+                    continue;
+                }
                 curl_multi_add_handle($multiHandle, $curlHandle);
                 $handleMap[spl_object_id($curlHandle)] = [$domain, $key, $curlHandle, $spec];
             }
@@ -292,11 +306,11 @@ class Http
             // juste après, on veut seulement forcer la mise à jour interne.
         }
 
-        $results = [];
         foreach ($handleMap as [$domain, $key, $curlHandle, $spec]) {
             $result = $this->collectResult($curlHandle, $spec);
             curl_multi_remove_handle($multiHandle, $curlHandle);
             curl_close($curlHandle);
+
 
             if (!$result->ok && $spec->method === 'GET') {
                 $result = $this->retryOnce($spec);
