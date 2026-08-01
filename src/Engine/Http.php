@@ -66,14 +66,26 @@ class Http
      * certains domaines/hébergeurs répondent mal à une charge plus
      * concurrente et qu'il faut redescendre cette valeur, pas forcément un
      * souci réseau généralisé.
+     *
+     * Configurable par instance depuis le 2026-08-01 (auparavant figé pour
+     * tous les workers, y compris ceux en capacité "low" sur hébergement
+     * mutualisé contraint — capacities.*.max_concurrency existait déjà en
+     * config mais n'était branché nulle part). Même prudence qu'au-dessus :
+     * ne pas monter au-delà de 12 sans validation réelle, cette valeur a
+     * déjà été éprouvée, une plus haute non.
      */
-    private const MAX_CONCURRENT_DOMAINS = 12;
+    private readonly int $maxConcurrentDomains;
+
+    public function __construct(int $maxConcurrentDomains = 12)
+    {
+        $this->maxConcurrentDomains = max(1, $maxConcurrentDomains);
+    }
 
     /** @var array<int, string> Buffer manuel par handle (spl_object_id => contenu accumulé), voir buildCurlHandle(). */
     private array $buffers = [];
 
     /**
-     * Récupère un lot de requêtes en parallèle, plafonné à MAX_CONCURRENT_DOMAINS
+     * Récupère un lot de requêtes en parallèle, plafonné à $maxConcurrentDomains
      * lots de requêtes "actifs" en même temps.
      *
      * @param array<string, RequestSpec[]> $requestsByDomain Domaine => liste de requêtes à exécuter pour lui.
@@ -84,7 +96,7 @@ class Http
         $results = [];
         $domainChunks = array_chunk(
             array_keys($requestsByDomain),
-            self::MAX_CONCURRENT_DOMAINS,
+            $this->maxConcurrentDomains,
             preserve_keys: true,
         );
 
