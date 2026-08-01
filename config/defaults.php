@@ -12,9 +12,9 @@ return [
  ],
  'rescan'=>['success_days'=>30,'temporary_error_hours'=>24,'not_found_days'=>7,'unreachable_days'=>90],
  'capacities'=>[
-  'low'=>['max_runtime_seconds'=>40,'max_cc_pages'=>1,'scan_chunk_size'=>5,'max_scan_domains'=>15,'max_concurrency'=>1],
-  'medium'=>['max_runtime_seconds'=>240,'max_cc_pages'=>1,'scan_chunk_size'=>15,'max_scan_domains'=>45,'max_concurrency'=>2],
-  'high'=>['max_runtime_seconds'=>540,'max_cc_pages'=>1,'scan_chunk_size'=>25,'max_scan_domains'=>100,'max_concurrency'=>4],
+  'low'=>['max_runtime_seconds'=>40,'max_cc_pages'=>1,'scan_chunk_size'=>5,'max_scan_domains'=>15,'max_concurrency'=>4],
+  'medium'=>['max_runtime_seconds'=>240,'max_cc_pages'=>10,'scan_chunk_size'=>15,'max_scan_domains'=>45,'max_concurrency'=>8],
+  'high'=>['max_runtime_seconds'=>540,'max_cc_pages'=>25,'scan_chunk_size'=>25,'max_scan_domains'=>100,'max_concurrency'=>12],
  ],
  'security'=>[
    'request_ttl_seconds'=>300,
