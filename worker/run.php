@@ -24,10 +24,10 @@ try{
    catch(Throwable $e){$errors++;$failure=callApi('POST',$base.'/common-crawl-fail.php',$token,['job_id'=>$job['id'],'error'=>$e->getMessage()]);Bootstrap::log('error','Common Crawl job failed',['job'=>$job,'error'=>$e->getMessage(),'retry'=>$failure]);echo "Échec CC {$job['tld']} page {$job['page_number']} : {$e->getMessage()} — reprise différée.\n";break;}
   }
  } elseif($plan['action']==='scan'){
-  $max=(int)$plan['limits']['max_scan_domains'];$chunk=(int)$plan['limits']['scan_chunk_size'];$override=(int)getenv('OGPN_MAX_SCAN_DOMAINS');if($override>0)$max=min($max,$override);$chunkOverride=(int)getenv('OGPN_SCAN_CHUNK_SIZE');if($chunkOverride>0)$chunk=max(1,min($chunk,$chunkOverride));
+  $max=(int)$plan['limits']['max_scan_domains'];$chunk=(int)$plan['limits']['scan_chunk_size'];$concurrency=(int)($plan['limits']['max_concurrency']??12);$override=(int)getenv('OGPN_MAX_SCAN_DOMAINS');if($override>0)$max=min($max,$override);$chunkOverride=(int)getenv('OGPN_SCAN_CHUNK_SIZE');if($chunkOverride>0)$chunk=max(1,min($chunk,$chunkOverride));
   while($scanned<$max&&microtime(true)<$deadline-10){$q=callApi('POST',$base.'/scan-claim.php',$token,['limit'=>min($chunk,$max-$scanned)]);$domains=$q['domains']??[];if(!$domains){echo "Aucun domaine dû.\n";break;}$results=[];$failed=[];
    $eligible=[];foreach($domains as $domain){if(microtime(true)>=$deadline-5){$failed[]=$domain;continue;}$eligible[]=(string)$domain;}
-   if($eligible){try{$batch=SiteScanner::scanBatch($eligible);foreach($eligible as $domain){if(isset($batch[$domain])){$results[]=$batch[$domain];}else{$failed[]=$domain;$errors++;$details['scan_errors'][]=['domain'=>$domain,'error'=>'missing_batch_result'];}}}catch(Throwable $e){foreach($eligible as $domain)$failed[]=$domain;$errors+=count($eligible);$details['scan_errors'][]=['batch'=>$eligible,'error'=>$e->getMessage()];}}
+   if($eligible){try{$batch=SiteScanner::scanBatch($eligible,$concurrency);foreach($eligible as $domain){if(isset($batch[$domain])){$results[]=$batch[$domain];}else{$failed[]=$domain;$errors++;$details['scan_errors'][]=['domain'=>$domain,'error'=>'missing_batch_result'];}}}catch(Throwable $e){foreach($eligible as $domain)$failed[]=$domain;$errors+=count($eligible);$details['scan_errors'][]=['batch'=>$eligible,'error'=>$e->getMessage()];}}
    if($results){$r=callApi('POST',$base.'/scan-ingest.php',$token,['results'=>$results],180);$scanned+=(int)$r['ingested'];echo $r['ingested']." domaines scannés.\n";}
    if($failed)callApi('POST',$base.'/scan-fail.php',$token,['domains'=>$failed]);
   }
