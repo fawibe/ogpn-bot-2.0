@@ -18,7 +18,7 @@ final class SiteScanner
     }
 
     /** @param string[] $domains @return array<string,array> */
-    public static function scanBatch(array $domains): array
+    public static function scanBatch(array $domains, int $maxConcurrentDomains = 12): array
     {
         $normalized = [];
         foreach ($domains as $domain) {
@@ -28,7 +28,7 @@ final class SiteScanner
         $normalized = array_values(array_unique($normalized));
         if ($normalized === []) return [];
 
-        $engine = new EngineScanner(new Http());
+        $engine = new EngineScanner(new Http($maxConcurrentDomains));
         $raw = $engine->scanBatch($normalized);
         $mapped = [];
         foreach ($raw as $domain => $result) {
