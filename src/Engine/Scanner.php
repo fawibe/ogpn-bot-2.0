@@ -857,13 +857,50 @@ final class Scanner
     }
 
     /** Extrait la valeur brute de <meta name="generator" content="..."> — donnée brute, aucune normalisation (ex. "WordPress 6.4"). */
+    /**
+     * Liste des vrais CMS/plateformes connus — sert à départager plusieurs
+     * balises <meta name="generator"> concurrentes sur une même page. Un
+     * plugin (ex. All in One SEO pour WordPress) pose parfois sa propre
+     * balise generator, qui peut apparaître AVANT celle du CMS lui-même
+     * selon l'ordre des hooks — sans cette liste, le premier match "gagne"
+     * à tort, quel qu'il soit. Recherche par sous-chaîne, insensible à la casse.
+     */
+    private const KNOWN_CMS_PREFIXES = [
+        'wordpress', 'joomla', 'drupal', 'wix.com', 'jimdo', 'shopify', 'squarespace',
+        'webflow', 'prestashop', 'magento', 'typo3', 'ghost', 'weebly', 'blogger',
+        'contao', 'concrete5', 'expressionengine', 'modx', 'silverstripe', 'craft cms',
+        'hubspot', 'duda', 'godaddy website builder', 'google sites', 'strato',
+    ];
+
+    /**
+     * Prend TOUTES les balises <meta name="generator"> de la page (pas
+     * seulement la première) et privilégie celle qui correspond à un CMS
+     * connu — corrige le cas où un plugin (AIOSEO, Yoast...) pose sa propre
+     * balise generator qui apparaît avant celle du CMS réel dans le HTML.
+     * Repli sur la première balise trouvée si aucune ne correspond à la
+     * liste connue.
+     */
     private function extractGenerator(string $html): ?string
     {
-        if (preg_match('/<meta[^>]+name=["\']generator["\'][^>]+content=["\']([^"\']+)["\']/i', $html, $m) === 1) {
-            return trim($m[1]) !== '' ? trim($m[1]) : null;
+        if (preg_match_all('/<meta[^>]+name=["\']generator["\'][^>]+content=["\']([^"\']+)["\']/i', $html, $matches) < 1) {
+            return null;
         }
 
-        return null;
+        $candidates = array_values(array_filter(array_map('trim', $matches[1]), static fn(string $v): bool => $v !== ''));
+        if ($candidates === []) {
+            return null;
+        }
+
+        foreach ($candidates as $candidate) {
+            $lower = strtolower($candidate);
+            foreach (self::KNOWN_CMS_PREFIXES as $prefix) {
+                if (str_contains($lower, $prefix)) {
+                    return $candidate;
+                }
+            }
+        }
+
+        return $candidates[0]; // aucun CMS connu reconnu -- on garde le premier trouvé, honnête plutôt que de perdre l'info
     }
 
     /**

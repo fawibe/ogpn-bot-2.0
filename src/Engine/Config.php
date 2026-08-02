@@ -610,6 +610,14 @@ final class Config
         ['name' => 'MitID', 'slug' => 'mitid', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['mitid.dk']],
         ['name' => 'BankID', 'slug' => 'bankid', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['bankid.com', 'bankid.no']],
         ['name' => 'eIDAS (nœud générique)', 'slug' => 'eidas_generic', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['eidas-node', '/eidas/']],
+        // -- Ajoutés le 2026-08-02, confirmés par recherche (déploiement
+        // eIDAS 2.0 en cours, échéance fin 2026 -- liste amenée à grandir) :
+        ['name' => 'MyGov.be', 'slug' => 'mygov_be', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['mygov.be', 'start.mygov.be']],
+        ['name' => 'Smart-ID', 'slug' => 'smart_id', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['smart-id.com', 'smart-id.be']],
+        ['name' => 'mObywatel', 'slug' => 'mobywatel', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['mobywatel.gov.pl']],
+        ['name' => 'ID Austria', 'slug' => 'id_austria', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['id.austria.gv.at', 'oesterreich.gv.at']],
+        ['name' => 'France Identité', 'slug' => 'france_identite', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['france-identite.gouv.fr']],
+        ['name' => 'IT-Wallet / IO', 'slug' => 'it_wallet', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['io.italia.it', 'itwallet.it']],
 
         // -- Identité nationale hors UE, pour comparaison --
         ['name' => 'Login.gov', 'slug' => 'login_gov', 'region' => 'non_eu', 'type' => 'national_identity', 'patterns' => ['secure.login.gov']],
