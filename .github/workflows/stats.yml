@@ -1,0 +1,20 @@
+name: OGPN-BOT Statistics Refresh
+on:
+  schedule:
+    # Toutes les 3h. À ajuster (ex. '0 */6 * * *' pour toutes les 6h) selon
+    # le rythme d'évolution du jeu de données — inutile de recalculer plus
+    # souvent que le rythme réel des scans.
+    - cron: '15 */3 * * *'
+  workflow_dispatch:
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Recalculer les statistiques du rapport
+        run: |
+          curl -sf -X POST "${OGPN_API_URL}/api/stats-refresh.php" \
+            -H "Authorization: Bearer ${OGPN_STATS_TOKEN}"
+        env:
+          OGPN_API_URL: ${{ vars.OGPN_API_URL }}
+          OGPN_STATS_TOKEN: ${{ secrets.OGPN_STATS_TOKEN }}
