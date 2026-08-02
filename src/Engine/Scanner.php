@@ -610,6 +610,10 @@ final class Scanner
         $generator = $this->extractGenerator($htmlWithoutComments);
         $digitalIdentityProviders = $this->detectDigitalIdentityProviders($htmlWithoutComments);
         $reviewPlatforms = $this->detectReviewPlatforms($htmlWithoutComments);
+        $externalStorageProviders = $this->detectPatternProviders($htmlWithoutComments, Config::EXTERNAL_STORAGE_PROVIDERS);
+        $internalSearchTools = $this->detectPatternProviders($htmlWithoutComments, Config::INTERNAL_SEARCH_TOOLS);
+        $externalForms = $this->detectExternalForms($htmlWithoutComments, $domain);
+        $aiFeatures = $this->detectPatternProviders($htmlWithoutComments, Config::AI_FEATURE_PROVIDERS);
         $serverHeader = $this->extractHeader($htmlResult?->headersRaw ?? '', 'Server');
         $redirectInfo = $this->redirectInfoFrom($htmlResult);
 
@@ -671,6 +675,10 @@ final class Scanner
             serverHeader: $serverHeader,
             digitalIdentityProviders: $digitalIdentityProviders,
             reviewPlatforms: $reviewPlatforms,
+            externalStorageProviders: $externalStorageProviders,
+            internalSearchTools: $internalSearchTools,
+            externalForms: $externalForms,
+            aiFeatures: $aiFeatures,
             redirectStatus: $redirectInfo['status'],
             redirectCount: $redirectInfo['count'],
         );
@@ -924,6 +932,107 @@ final class Scanner
                         'region' => $platform['region'],
                     ];
                     break;
+                }
+            }
+        }
+
+        return array_values($found);
+    }
+
+    /**
+     * Détecteur générique par motif d'URL/HTML — réutilisé pour le stockage
+     * externe, les outils de recherche interne, et les fonctionnalités IA
+     * (2026-08), pour éviter de dupliquer trois fois la même boucle que
+     * detectReviewPlatforms()/detectDigitalIdentityProviders() ci-dessus.
+     *
+     * @param array<int, array{name: string, slug: string, patterns: string[]}> $providers
+     * @return array<int, array<string, mixed>>
+     */
+    private function detectPatternProviders(string $html, array $providers): array
+    {
+        if ($html === '') {
+            return [];
+        }
+
+        $htmlLower = strtolower($html);
+        $found = [];
+
+        foreach ($providers as $provider) {
+            foreach ($provider['patterns'] as $pattern) {
+                if (str_contains($htmlLower, strtolower($pattern))) {
+                    $found[$provider['slug']] = $provider;
+                    unset($found[$provider['slug']]['patterns']); // motifs de recherche, pas une donnée utile en sortie
+                    break;
+                }
+            }
+        }
+
+        return array_values($found);
+    }
+
+    /**
+     * Formulaires externes : fournisseurs connus (Config::EXTERNAL_FORM_PROVIDERS,
+     * même mécanique que detectPatternProviders) COMPLÉTÉS par une détection
+     * générique — tout <form action="..."> dont l'hôte cible diffère du
+     * domaine analysé compte comme un formulaire externe, même s'il ne
+     * correspond à aucun fournisseur répertorié. Capte les services non
+     * encore listés, pas seulement les plus connus.
+     */
+    private function detectExternalForms(string $html, string $domain): array
+    {
+        if ($html === '') {
+            return [];
+        }
+
+        $found = [];
+        $knownPatterns = [];
+        foreach (Config::EXTERNAL_FORM_PROVIDERS as $provider) {
+            foreach ($provider['patterns'] as $pattern) {
+                if (str_contains(strtolower($html), strtolower($pattern))) {
+                    $found[$provider['slug']] = [
+                        'name' => $provider['name'],
+                        'slug' => $provider['slug'],
+                        'region' => $provider['region'],
+                        'cross_domain' => true,
+                    ];
+                    $knownPatterns[] = strtolower($pattern);
+                    break;
+                }
+            }
+        }
+
+        if (preg_match_all('/<form\b[^>]*\baction\s*=\s*["\']([^"\']+)["\']/i', $html, $matches) > 0) {
+            foreach ($matches[1] as $action) {
+                $actionHost = parse_url(trim($action), PHP_URL_HOST);
+                if (!is_string($actionHost) || $actionHost === '') {
+                    continue; // action relative ou vide -- reste sur le même domaine, rien à signaler
+                }
+                $actionDomain = \Ogpn\Bot\Domain::fromUrl('https://'.$actionHost);
+                if ($actionDomain === null || $actionDomain === $domain) {
+                    continue;
+                }
+                // Déjà capté par un fournisseur connu (ex. l'hôte réel
+                // "hsforms.com" correspond au motif d'un fournisseur déjà
+                // ajouté sous son nom propre "HubSpot Forms" ci-dessus) --
+                // éviter de lister deux fois le même service sous deux noms.
+                $alreadyKnown = false;
+                foreach ($knownPatterns as $pattern) {
+                    if (str_contains(strtolower($actionHost), $pattern)) {
+                        $alreadyKnown = true;
+                        break;
+                    }
+                }
+                if ($alreadyKnown) {
+                    continue;
+                }
+                $slug = 'form_'.$actionDomain;
+                if (!isset($found[$slug])) {
+                    $found[$slug] = [
+                        'name' => $actionDomain,
+                        'slug' => $slug,
+                        'region' => null,
+                        'cross_domain' => true,
+                    ];
                 }
             }
         }

@@ -643,6 +643,76 @@ final class Config
     ];
 
     /**
+     * Fournisseurs de stockage externe (objets/fichiers) référencés dans le
+     * HTML — détection gratuite (aucune requête réseau en plus), simple
+     * recherche de motifs d'URL déjà présents dans la page récupérée.
+     * Liste de départ (2026-08), volume attendu faible mais gratuit à
+     * suivre — non exhaustive.
+     */
+    public const EXTERNAL_STORAGE_PROVIDERS = [
+        ['name' => 'Amazon S3', 'slug' => 's3', 'region' => 'non_eu', 'patterns' => ['s3.amazonaws.com', '.s3.eu-', '.s3.us-', '.s3.ap-']],
+        ['name' => 'Azure Blob Storage', 'slug' => 'azure_blob', 'region' => 'non_eu', 'patterns' => ['blob.core.windows.net']],
+        ['name' => 'Google Cloud Storage', 'slug' => 'gcs', 'region' => 'non_eu', 'patterns' => ['storage.googleapis.com']],
+        ['name' => 'Backblaze B2', 'slug' => 'backblaze_b2', 'region' => 'non_eu', 'patterns' => ['backblazeb2.com']],
+        ['name' => 'Cloudinary', 'slug' => 'cloudinary', 'region' => 'non_eu', 'patterns' => ['cloudinary.com', 'res.cloudinary.com']],
+        ['name' => 'OVH Object Storage', 'slug' => 'ovh_storage', 'region' => 'eu', 'patterns' => ['cloud.ovh.net/storage', 'storage.gra.cloud.ovh']],
+        ['name' => 'Scaleway Object Storage', 'slug' => 'scaleway_storage', 'region' => 'eu', 'patterns' => ['scw.cloud']],
+    ];
+
+    /** Outils de recherche interne tiers (widgets embarqués), détection gratuite par motif d'URL. */
+    public const INTERNAL_SEARCH_TOOLS = [
+        ['name' => 'Algolia', 'slug' => 'algolia', 'region' => 'non_eu', 'patterns' => ['algolia.net', 'algolianet.com', 'algoliasearch']],
+        ['name' => 'Elastic App Search / Swiftype', 'slug' => 'swiftype', 'region' => 'non_eu', 'patterns' => ['swiftype.com', 'app-search']],
+        ['name' => 'Typesense', 'slug' => 'typesense', 'region' => 'non_eu', 'patterns' => ['typesense.org', 'a1.typesense.net']],
+        ['name' => 'Klevu', 'slug' => 'klevu', 'region' => 'eu', 'patterns' => ['klevu.com']],
+        ['name' => 'Doofinder', 'slug' => 'doofinder', 'region' => 'eu', 'patterns' => ['doofinder.com']],
+    ];
+
+    /**
+     * Fournisseurs de formulaires externes connus, détectés par motif d'URL
+     * — en complément, Scanner::detectExternalForms() signale aussi tout
+     * <form action="..."> pointant vers un domaine différent du site
+     * analysé, même hors de cette liste (services non répertoriés).
+     */
+    public const EXTERNAL_FORM_PROVIDERS = [
+        ['name' => 'Typeform', 'slug' => 'typeform', 'region' => 'non_eu', 'patterns' => ['typeform.com']],
+        ['name' => 'HubSpot Forms', 'slug' => 'hubspot_forms', 'region' => 'non_eu', 'patterns' => ['hsforms.com', 'forms.hubspot.com']],
+        ['name' => 'Google Forms', 'slug' => 'google_forms', 'region' => 'non_eu', 'patterns' => ['docs.google.com/forms', 'forms.gle']],
+        ['name' => 'Jotform', 'slug' => 'jotform', 'region' => 'non_eu', 'patterns' => ['jotform.com']],
+        ['name' => 'Wufoo', 'slug' => 'wufoo', 'region' => 'non_eu', 'patterns' => ['wufoo.com']],
+        ['name' => 'Formspree', 'slug' => 'formspree', 'region' => 'non_eu', 'patterns' => ['formspree.io']],
+    ];
+
+    /**
+     * Fonctionnalités IA embarquées détectables par motif d'URL/script —
+     * volontairement limité à ce qui est fiable à repérer ainsi (référence
+     * explicite à un fournisseur, ou widget connu). Des catégories demandées
+     * (recommandation, reconnaissance d'image, notation automatisée) n'ont
+     * pas de signature HTML fiable et ne sont pas couvertes ici — nécessite
+     * une approche différente si un jour utile. Liste de départ (2026-08).
+     */
+    public const AI_FEATURE_PROVIDERS = [
+        // -- Référence explicite à un fournisseur de modèle --
+        ['name' => 'OpenAI (API/widget)', 'slug' => 'openai', 'category' => 'model_provider', 'patterns' => ['api.openai.com', 'chat.openai.com', 'cdn.openai.com']],
+        ['name' => 'Anthropic (API/widget)', 'slug' => 'anthropic', 'category' => 'model_provider', 'patterns' => ['api.anthropic.com', 'claude.ai']],
+        ['name' => 'Google Gemini', 'slug' => 'gemini', 'category' => 'model_provider', 'patterns' => ['generativelanguage.googleapis.com', 'gemini.google.com']],
+        ['name' => 'Microsoft Copilot', 'slug' => 'copilot', 'category' => 'model_provider', 'patterns' => ['copilot.microsoft.com']],
+        ['name' => 'Mistral AI', 'slug' => 'mistral', 'category' => 'model_provider', 'patterns' => ['api.mistral.ai', 'mistral.ai']],
+        // -- Chatbots/assistants conversationnels génériques (fournisseur du widget, pas forcément le modèle sous-jacent) --
+        ['name' => 'Intercom (Fin AI)', 'slug' => 'intercom', 'category' => 'chatbot', 'patterns' => ['widget.intercom.io', 'js.intercomcdn.com']],
+        ['name' => 'Drift', 'slug' => 'drift', 'category' => 'chatbot', 'patterns' => ['js.driftt.com', 'drift.com/widget']],
+        ['name' => 'Zendesk (Answer Bot)', 'slug' => 'zendesk', 'category' => 'chatbot', 'patterns' => ['static.zdassets.com', 'zendesk.com/embeddable']],
+        ['name' => 'Tidio', 'slug' => 'tidio', 'category' => 'chatbot', 'patterns' => ['code.tidio.co']],
+        ['name' => 'Crisp', 'slug' => 'crisp', 'category' => 'chatbot', 'patterns' => ['client.crisp.chat']],
+        ['name' => 'Chatbase', 'slug' => 'chatbase', 'category' => 'chatbot', 'patterns' => ['chatbase.co']],
+        ['name' => 'Voiceflow', 'slug' => 'voiceflow', 'category' => 'chatbot', 'patterns' => ['voiceflow.com']],
+        // -- Traduction automatique --
+        ['name' => 'Weglot', 'slug' => 'weglot', 'category' => 'translation', 'patterns' => ['weglot.com']],
+        ['name' => 'Google Translate (widget)', 'slug' => 'google_translate_widget', 'category' => 'translation', 'patterns' => ['translate.google.com/translate_a', 'translate.googleapis.com']],
+        ['name' => 'DeepL (widget)', 'slug' => 'deepl_widget', 'category' => 'translation', 'patterns' => ['deepl.com/translator']],
+    ];
+
+    /**
      * Phrases indiquant la présence d'une déclaration d'accessibilité —
      * obligation légale pour le secteur public sous la directive UE
      * 2016/2102. Couverture identique à FOR_SALE_PHRASES : 24 langues UE +

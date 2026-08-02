@@ -104,6 +104,14 @@ final class ScanResult
         public readonly array $digitalIdentityProviders = [],
         /** @var array<int, array{name: string, slug: string, region: string}> Plateformes d'avis clients détectées (lien ou script) — voir Config::REVIEW_PLATFORMS. */
         public readonly array $reviewPlatforms = [],
+        /** @var array<int, array{name: string, slug: string, region: string}> Fournisseurs de stockage externe détectés (S3, Blob Storage...) — voir Config::EXTERNAL_STORAGE_PROVIDERS. */
+        public readonly array $externalStorageProviders = [],
+        /** @var array<int, array{name: string, slug: string, region: string}> Outils de recherche interne tiers détectés — voir Config::INTERNAL_SEARCH_TOOLS. */
+        public readonly array $internalSearchTools = [],
+        /** @var array<int, array{name: string, slug: string, region: ?string, cross_domain: bool}> Formulaires externes détectés — fournisseurs connus (Config::EXTERNAL_FORM_PROVIDERS) et/ou action= vers un domaine différent du site analysé. */
+        public readonly array $externalForms = [],
+        /** @var array<int, array{name: string, slug: string, category: string}> Fonctionnalités IA embarquées détectées (chatbot, traduction, référence explicite à un fournisseur de modèle) — voir Config::AI_FEATURE_PROVIDERS. */
+        public readonly array $aiFeatures = [],
         /** Statut (301/302/...) de la toute première redirection suivie pour la page d'analyse — null si aucune redirection. */
         public readonly ?int $redirectStatus = null,
         /** Nombre de sauts de redirection suivis pour atteindre la page d'analyse — 0 si aucune. */
