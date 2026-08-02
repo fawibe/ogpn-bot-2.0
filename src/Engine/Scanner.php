@@ -886,6 +886,7 @@ final class Scanner
                             'name' => $provider['name'],
                             'slug' => $provider['slug'],
                             'region' => $provider['region'],
+                            'type' => $provider['type'] ?? 'national_identity',
                         ];
                         continue 3;
                     }
@@ -1467,7 +1468,16 @@ final class Scanner
             'tracker_categories' => array_values(array_unique($trackerCategories)),
             'consent_friction_score_auto' => $score,
             'consent_friction_score_manual' => null,
-            'human_review_needed' => $score >= 3 || $payOrConsentCandidate || $this->hasSignal($signals, 'tracking_without_visible_cmp_candidate'),
+            // Seuil relevé de >=3 à >=4 le 2026-08-02 (volume trop important à
+            // >=3 pour rester exploitable) : ne signale plus que les cas les
+            // plus nets — "tout accepter" visible sans "tout refuser" ni
+            // réglages (score 4), ou mur payant-ou-consentement (score 5,
+            // déjà forcé par le retour anticipé ci-dessus, donc déjà couvert
+            // par >=4 seul — la clause OR sur payOrConsentCandidate devenait
+            // redondante). La clause sur les traceurs sans CMP visible est
+            // retirée aussi : la garder aurait en partie annulé l'effet du
+            // relèvement de seuil.
+            'human_review_needed' => $score >= 4,
             'methodology' => 'observed_html_signals_only_not_legal_verdict',
             'signals' => array_slice($signals, 0, 12),
         ];

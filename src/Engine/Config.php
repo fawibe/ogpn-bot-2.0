@@ -600,32 +600,46 @@ final class Config
      * @var array<int, array{name: string, slug: string, region: 'eu'|'non_eu', patterns: string[]}>
      */
     public const DIGITAL_IDENTITY_PROVIDERS = [
-        // -- Union européenne --
-        ['name' => 'FranceConnect', 'slug' => 'franceconnect', 'region' => 'eu', 'patterns' => ['franceconnect.gouv.fr', 'franceconnect.fr']],
-        ['name' => 'SPID', 'slug' => 'spid', 'region' => 'eu', 'patterns' => ['spid.gov.it', 'idserver.servizicie.interno.gov.it']],
-        ['name' => 'Itsme', 'slug' => 'itsme', 'region' => 'eu', 'patterns' => ['itsme.be', 'itsme-id.com']],
-        ['name' => 'DigiD', 'slug' => 'digid', 'region' => 'eu', 'patterns' => ['digid.nl']],
-        ['name' => "Cl@ve", 'slug' => 'clave', 'region' => 'eu', 'patterns' => ['clave.gob.es']],
-        ['name' => 'Chave Móvel Digital', 'slug' => 'cmd_pt', 'region' => 'eu', 'patterns' => ['autenticacao.gov.pt']],
-        ['name' => 'MitID', 'slug' => 'mitid', 'region' => 'eu', 'patterns' => ['mitid.dk']],
-        ['name' => 'BankID', 'slug' => 'bankid', 'region' => 'eu', 'patterns' => ['bankid.com', 'bankid.no']],
-        ['name' => 'eIDAS (nœud générique)', 'slug' => 'eidas_generic', 'region' => 'eu', 'patterns' => ['eidas-node', '/eidas/']],
+        // -- Identité numérique nationale (UE, niveau eIDAS) --
+        ['name' => 'FranceConnect', 'slug' => 'franceconnect', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['franceconnect.gouv.fr', 'franceconnect.fr']],
+        ['name' => 'SPID', 'slug' => 'spid', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['spid.gov.it', 'idserver.servizicie.interno.gov.it']],
+        ['name' => 'Itsme', 'slug' => 'itsme', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['itsme.be', 'itsme-id.com']],
+        ['name' => 'DigiD', 'slug' => 'digid', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['digid.nl']],
+        ['name' => "Cl@ve", 'slug' => 'clave', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['clave.gob.es']],
+        ['name' => 'Chave Móvel Digital', 'slug' => 'cmd_pt', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['autenticacao.gov.pt']],
+        ['name' => 'MitID', 'slug' => 'mitid', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['mitid.dk']],
+        ['name' => 'BankID', 'slug' => 'bankid', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['bankid.com', 'bankid.no']],
+        ['name' => 'eIDAS (nœud générique)', 'slug' => 'eidas_generic', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['eidas-node', '/eidas/']],
 
-        // -- Hors UE, pour comparaison --
-        ['name' => 'Login.gov', 'slug' => 'login_gov', 'region' => 'non_eu', 'patterns' => ['secure.login.gov']],
-        ['name' => 'GOV.UK One Login', 'slug' => 'gov_uk_one_login', 'region' => 'non_eu', 'patterns' => ['signin.account.gov.uk']],
-        ['name' => 'ID.me', 'slug' => 'id_me', 'region' => 'non_eu', 'patterns' => ['id.me/sign_in', 'wallet.id.me']],
+        // -- Identité nationale hors UE, pour comparaison --
+        ['name' => 'Login.gov', 'slug' => 'login_gov', 'region' => 'non_eu', 'type' => 'national_identity', 'patterns' => ['secure.login.gov']],
+        ['name' => 'GOV.UK One Login', 'slug' => 'gov_uk_one_login', 'region' => 'non_eu', 'type' => 'national_identity', 'patterns' => ['signin.account.gov.uk']],
+        ['name' => 'ID.me', 'slug' => 'id_me', 'region' => 'non_eu', 'type' => 'national_identity', 'patterns' => ['id.me/sign_in', 'wallet.id.me']],
 
-        // -- Identité commerciale, pour comparaison public/privé --
-        ['name' => 'Sign in with Apple', 'slug' => 'apple_id', 'region' => 'non_eu', 'patterns' => ['appleid.apple.com/auth']],
-        ['name' => 'Google Sign-In', 'slug' => 'google_signin', 'region' => 'non_eu', 'patterns' => ['accounts.google.com/o/oauth2', 'accounts.google.com/signin']],
-        ['name' => 'Microsoft Account / Entra ID', 'slug' => 'microsoft_identity', 'region' => 'non_eu', 'patterns' => ['login.microsoftonline.com', 'login.live.com', 'login.windows.net']],
-        ['name' => 'Facebook Login', 'slug' => 'facebook_login', 'region' => 'non_eu', 'patterns' => ['facebook.com/dialog/oauth', 'www.facebook.com/v', 'connect.facebook.net']],
-        ['name' => 'LinkedIn Sign-In', 'slug' => 'linkedin_signin', 'region' => 'non_eu', 'patterns' => ['linkedin.com/oauth', 'www.linkedin.com/oauth']],
-        ['name' => 'GitHub OAuth', 'slug' => 'github_oauth', 'region' => 'non_eu', 'patterns' => ['github.com/login/oauth']],
-        ['name' => 'Auth0', 'slug' => 'auth0', 'region' => 'non_eu', 'patterns' => ['auth0.com/authorize', '.auth0.com/']],
-        ['name' => 'Okta', 'slug' => 'okta', 'region' => 'non_eu', 'patterns' => ['okta.com/oauth2', '.okta.com/']],
-        ['name' => 'Keycloak', 'slug' => 'keycloak', 'region' => 'eu', 'patterns' => ['/realms/', '/protocol/openid-connect/']],
+        // -- Connexion commerciale (login social/OAuth) — PAS une vérification
+        // d'identité au sens propre, juste une authentification déléguée.
+        ['name' => 'Sign in with Apple', 'slug' => 'apple_id', 'region' => 'non_eu', 'type' => 'commercial_login', 'patterns' => ['appleid.apple.com/auth']],
+        ['name' => 'Google Sign-In', 'slug' => 'google_signin', 'region' => 'non_eu', 'type' => 'commercial_login', 'patterns' => ['accounts.google.com/o/oauth2', 'accounts.google.com/signin']],
+        ['name' => 'Microsoft Account / Entra ID', 'slug' => 'microsoft_identity', 'region' => 'non_eu', 'type' => 'commercial_login', 'patterns' => ['login.microsoftonline.com', 'login.live.com', 'login.windows.net']],
+        ['name' => 'Facebook Login', 'slug' => 'facebook_login', 'region' => 'non_eu', 'type' => 'commercial_login', 'patterns' => ['facebook.com/dialog/oauth', 'www.facebook.com/v', 'connect.facebook.net']],
+        ['name' => 'LinkedIn Sign-In', 'slug' => 'linkedin_signin', 'region' => 'non_eu', 'type' => 'commercial_login', 'patterns' => ['linkedin.com/oauth', 'www.linkedin.com/oauth']],
+        ['name' => 'GitHub OAuth', 'slug' => 'github_oauth', 'region' => 'non_eu', 'type' => 'commercial_login', 'patterns' => ['github.com/login/oauth']],
+        ['name' => 'Auth0', 'slug' => 'auth0', 'region' => 'non_eu', 'type' => 'commercial_login', 'patterns' => ['auth0.com/authorize', '.auth0.com/']],
+        ['name' => 'Okta', 'slug' => 'okta', 'region' => 'non_eu', 'type' => 'commercial_login', 'patterns' => ['okta.com/oauth2', '.okta.com/']],
+        ['name' => 'Keycloak (SSO générique)', 'slug' => 'keycloak', 'region' => 'eu', 'type' => 'commercial_login', 'patterns' => ['/realms/', '/protocol/openid-connect/']],
+
+        // -- Vérification d'âge — catégorie distincte de l'identité et de la
+        // connexion : confirme "plus de X ans", jamais "qui vous êtes".
+        // Sujet réglementaire actif en UE (DSA) et Royaume-Uni (Online Safety
+        // Act). Liste de départ (2026-08), à enrichir — non exhaustive.
+        ['name' => 'Yoti', 'slug' => 'yoti', 'region' => 'non_eu', 'type' => 'age_verification', 'patterns' => ['yoti.com']],
+        ['name' => 'AgeChecked', 'slug' => 'agechecked', 'region' => 'non_eu', 'type' => 'age_verification', 'patterns' => ['agechecked.com']],
+        ['name' => 'VerifyMy', 'slug' => 'verifymy', 'region' => 'non_eu', 'type' => 'age_verification', 'patterns' => ['verifymy.io', 'verifymyage.com']],
+        ['name' => 'Veriff', 'slug' => 'veriff', 'region' => 'eu', 'type' => 'age_verification', 'patterns' => ['veriff.com', 'veriff.me']],
+        ['name' => 'Veratad', 'slug' => 'veratad', 'region' => 'non_eu', 'type' => 'age_verification', 'patterns' => ['veratad.com']],
+        ['name' => 'Trulioo', 'slug' => 'trulioo', 'region' => 'non_eu', 'type' => 'age_verification', 'patterns' => ['trulioo.com']],
+        ['name' => 'IDology (GBG)', 'slug' => 'idology', 'region' => 'non_eu', 'type' => 'age_verification', 'patterns' => ['idology.com']],
+        ['name' => 'Sumsub', 'slug' => 'sumsub', 'region' => 'eu', 'type' => 'age_verification', 'patterns' => ['sumsub.com']],
     ];
 
     /**
