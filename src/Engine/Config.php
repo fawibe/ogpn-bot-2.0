@@ -609,7 +609,7 @@ final class Config
         ['name' => 'Chave Móvel Digital', 'slug' => 'cmd_pt', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['autenticacao.gov.pt']],
         ['name' => 'MitID', 'slug' => 'mitid', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['mitid.dk']],
         ['name' => 'BankID', 'slug' => 'bankid', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['bankid.com', 'bankid.no']],
-        ['name' => 'eIDAS (nœud générique)', 'slug' => 'eidas_generic', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['eidas-node', '/eidas/']],
+        ['name' => 'eIDAS', 'slug' => 'eidas_generic', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['eidas-node', '/eidas/']],
         // -- Ajoutés le 2026-08-02, confirmés par recherche (déploiement
         // eIDAS 2.0 en cours, échéance fin 2026 -- liste amenée à grandir) :
         ['name' => 'MyGov.be', 'slug' => 'mygov_be', 'region' => 'eu', 'type' => 'national_identity', 'patterns' => ['mygov.be', 'start.mygov.be']],
@@ -634,7 +634,7 @@ final class Config
         ['name' => 'GitHub OAuth', 'slug' => 'github_oauth', 'region' => 'non_eu', 'type' => 'commercial_login', 'patterns' => ['github.com/login/oauth']],
         ['name' => 'Auth0', 'slug' => 'auth0', 'region' => 'non_eu', 'type' => 'commercial_login', 'patterns' => ['auth0.com/authorize', '.auth0.com/']],
         ['name' => 'Okta', 'slug' => 'okta', 'region' => 'non_eu', 'type' => 'commercial_login', 'patterns' => ['okta.com/oauth2', '.okta.com/']],
-        ['name' => 'Keycloak (SSO générique)', 'slug' => 'keycloak', 'region' => 'eu', 'type' => 'commercial_login', 'patterns' => ['/realms/', '/protocol/openid-connect/']],
+        ['name' => 'Keycloak', 'slug' => 'keycloak', 'region' => 'eu', 'type' => 'commercial_login', 'patterns' => ['/realms/', '/protocol/openid-connect/']],
 
         // -- Vérification d'âge — catégorie distincte de l'identité et de la
         // connexion : confirme "plus de X ans", jamais "qui vous êtes".
