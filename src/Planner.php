@@ -35,6 +35,8 @@ final class Planner {
   return self::response($worker,$m,$action,$reason,$mode,$d);
  }
  private static function response(array $worker,array $m,string $action,string $reason,string $mode,array $d): array {
-  $capacity=(string)$worker['capacity'];return ['action'=>$action,'reason'=>$reason,'mode'=>$mode,'metrics'=>$m,'limits'=>$d['capacities'][$capacity]??$d['capacities']['low'],'worker_id'=>$worker['worker_id'],'capacity'=>$capacity,'server_time'=>gmdate('c')];
+  $capacity=(string)$worker['capacity'];$limits=$d['capacities'][$capacity]??$d['capacities']['low'];
+  if(isset($worker['max_concurrency_override'])&&$worker['max_concurrency_override']!==null){$limits['max_concurrency']=(int)$worker['max_concurrency_override'];}
+  return ['action'=>$action,'reason'=>$reason,'mode'=>$mode,'metrics'=>$m,'limits'=>$limits,'worker_id'=>$worker['worker_id'],'capacity'=>$capacity,'server_time'=>gmdate('c')];
  }
 }
