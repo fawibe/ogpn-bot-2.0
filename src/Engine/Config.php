@@ -40,6 +40,58 @@ final class Config
     ];
 
     /**
+     * Classification des bots RENCONTRÉS DANS ROBOTS.TXT mais absents des
+     * 21 bots IA "vedettes" ci-dessus (Scanner::unknownAiBotGroupsFromRobots) —
+     * pour distinguer, parmi cette liste ouverte, ce qui relève réellement
+     * de l'IA (entraînement, assistant) de ce qui n'en relève pas (SEO,
+     * indexation classique, cadre de scraping générique, archivage,
+     * publicité, infrastructure, données d'entreprise). Recherche par
+     * sous-chaîne, insensible à la casse — même mécanique que
+     * KNOWN_PROVIDERS côté hébergement.
+     *
+     * Chaque entrée vérifiée individuellement via source réelle avant
+     * ajout (2026-08) — liste non exhaustive, à enrichir au fil du temps
+     * à mesure que de nouveaux noms apparaissent dans les scans.
+     */
+    public const OTHER_BOT_CATEGORIES = [
+        // -- Entraînement IA (au sens large : modèles de langage, vision, recommandation) --
+        ['pattern' => 'anthropic-ai', 'category' => 'ai_training'],       // identifiant historique Anthropic, remplacé depuis par ClaudeBot
+        ['pattern' => 'claude-web', 'category' => 'ai_training'],         // identifiant historique Anthropic, remplacé depuis par Claude-User
+        ['pattern' => 'ai2bot', 'category' => 'ai_training'],             // Allen Institute for AI — inclut ai2bot-dolma
+        ['pattern' => 'cohere-training-data-crawler', 'category' => 'ai_training'],
+        ['pattern' => 'img2dataset', 'category' => 'ai_training'],        // constitution de jeux de données image pour l'entraînement
+        ['pattern' => 'omgilibot', 'category' => 'ai_training'],          // variante d'omgili, déjà citée dans des robots.txt "anti-IA" type
+        ['pattern' => 'tiktokspider', 'category' => 'ai_training'],       // ByteDance, alimente entre autres leurs systèmes de recommandation
+        ['pattern' => 'timpibot', 'category' => 'ai_training'],
+        // -- Assistant IA (navigation/recherche pilotée par un assistant, pas de l'entraînement) --
+        ['pattern' => 'duckassistbot', 'category' => 'ai_assistant'],     // DuckDuckGo AI Assist
+        ['pattern' => 'mycentralaiscraperbot', 'category' => 'ai_assistant'],
+        // -- Outils SEO (analyse, pas entraînement de modèle) --
+        ['pattern' => 'rogerbot', 'category' => 'seo_tool'],              // Moz
+        ['pattern' => 'ahrefssiteaudit', 'category' => 'seo_tool'],       // Ahrefs
+        ['pattern' => 'semrushbot', 'category' => 'seo_tool'],           // SEMrush (couvre -sa/-swa/etc.)
+        ['pattern' => 'screaming frog', 'category' => 'seo_tool'],
+        ['pattern' => 'seokicks', 'category' => 'seo_tool'],
+        ['pattern' => 'dataforseobot', 'category' => 'seo_tool'],
+        ['pattern' => 'barkrowler', 'category' => 'seo_tool'],           // Babbar
+        // -- Indexation moteur de recherche classique --
+        ['pattern' => 'exabot', 'category' => 'search_index'],
+        ['pattern' => 'googleother', 'category' => 'search_index'],      // googleother-image/-video : variantes de GoogleOther
+        // -- Cadres de scraping génériques (pas un service précis, une bibliothèque) --
+        ['pattern' => 'scrapy', 'category' => 'scraping_framework'],
+        ['pattern' => 'nutch', 'category' => 'scraping_framework'],      // Apache Nutch
+        // -- Archivage/copie de site hors-ligne --
+        ['pattern' => 'webcopier', 'category' => 'archiving_tool'],
+        ['pattern' => 'webzip', 'category' => 'archiving_tool'],
+        // -- Qualité publicitaire (vérification d'annonces, pas indexation générale) --
+        ['pattern' => 'adsbot-google', 'category' => 'ads_quality'],
+        // -- Infrastructure (CDN/plateforme, pas un service métier en soi) --
+        ['pattern' => 'cloudflarebrowserrenderingcrawler', 'category' => 'infrastructure'],
+        // -- Données d'entreprise (profils d'entreprises, pas de l'entraînement de modèle) --
+        ['pattern' => 'aihitbot', 'category' => 'business_data'],
+    ];
+
+    /**
      * User-agents fréquents dans robots.txt qui NE sont PAS des bots IA —
      * moteurs de recherche classiques, outils SEO, aperçus de liens sociaux,
      * wildcard générique. Exclus de la détection "bot IA inconnu" pour que
