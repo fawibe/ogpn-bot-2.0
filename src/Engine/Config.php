@@ -166,7 +166,7 @@ final class Config
         ['pattern' => 'harkbot', 'category' => 'user_assistant'],
         ['pattern' => 'henry shopping agent', 'category' => 'user_assistant'],
         ['pattern' => 'hifibot', 'category' => 'user_assistant'],
-        ['pattern' => 'iaskspider/2.0', 'category' => 'user_assistant'],
+        ['pattern' => 'iaskspider', 'category' => 'user_assistant'], // couvre iaskspider et son ancienne forme "iaskspider/2.0" -- suffixe de version désormais retiré avant stockage
         ['pattern' => 'instapaper', 'category' => 'user_assistant'],
         ['pattern' => 'kagi-fetcher', 'category' => 'user_assistant'],
         ['pattern' => 'kimi-user', 'category' => 'user_assistant'],
@@ -288,6 +288,14 @@ final class Config
         // ============ ARCHIVAGE DE SITE ============
         ['pattern' => 'webcopier', 'category' => 'archiving_tool'],
         ['pattern' => 'webzip', 'category' => 'archiving_tool'],
+        ['pattern' => 'httrack', 'category' => 'archiving_tool'],
+        ['pattern' => 'copytrack', 'category' => 'archiving_tool'], // traque de réutilisation d'images, proche de l'archivage
+        // ============ AUTRES SERVICES IDENTIFIABLES (hors IA, hors SEO) ============
+        ['pattern' => 'superfeedr', 'category' => 'other_service'], // agrégateur de flux RSS/Atom
+        ['pattern' => 'robtexbot', 'category' => 'other_service'], // renseignement réseau/DNS
+        ['pattern' => 'linkalarm', 'category' => 'other_service'], // vérification de liens morts
+        ['pattern' => 'authory', 'category' => 'other_service'], // archivage de publications pour journalistes
+        ['pattern' => 'google-amphtml', 'category' => 'other_service'], // Google, pages AMP -- pas de l'entraînement de modèle
         // ============ QUALITÉ PUBLICITAIRE ============
         ['pattern' => 'oai-adsbot', 'category' => 'ads_quality'], // OpenAI, vérifie la pertinence des pages soumises comme publicités sur ChatGPT -- PAS de l'entraînement, sourcé WebRankInfo (documentation officielle OpenAI citée)
         ['pattern' => 'adsbot-google', 'category' => 'ads_quality'],
@@ -317,6 +325,17 @@ final class Config
         'facebookexternalhit', 'twitterbot', 'linkedinbot', 'pinterestbot', 'whatsapp', 'telegrambot', 'discordbot',
         'applebot', // distinct d'Applebot-Extended, qui LUI est dans AI_BOTS
         'archive.org_bot', 'ia_archiver',
+        // -- Outils de téléchargement génériques -- pas des "bots" d'un
+        // service identifiable, juste des logiciels que n'importe qui peut
+        // lancer depuis son poste (contrairement à webzip/webcopier/httrack,
+        // volontairement PAS ici -- ceux-là restent classés "archivage" dans
+        // OTHER_BOT_CATEGORIES, des outils identifiables, pas un bruit
+        // générique). Repéré le 2026-08 via un tri manuel de la liste des
+        // bots inconnus en production (des milliers d'entrées à occurrence
+        // unique, en grande partie ce genre d'outil).
+        'wget', 'curl', 'python-urllib', 'python-requests', 'go-http-client',
+        'teleport pro', 'go!zilla', 'gozilla', 'mygetright', 'getright',
+        'flashget', 'reget', 'httpunit', 'skipfish', 'sf/2 (skipfish)',
     ];
 
     /**

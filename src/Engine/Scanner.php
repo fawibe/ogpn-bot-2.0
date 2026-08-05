@@ -1835,6 +1835,44 @@ final class Scanner
      *
      * @return string[]
      */
+    /**
+     * Détecte les "noms de bot" qui ne sont structurellement pas des noms
+     * de bot du tout — des débris de parsing (fragment de chaîne User-Agent
+     * complète, URL embarquée, longueur excessive) plutôt qu'un vrai jeton
+     * robots.txt. Complète KNOWN_NON_AI_USER_AGENTS (liste de noms précis
+     * connus) par une détection de FORME plutôt que de nom exact — plus
+     * robuste face à la longue traîne de variantes jamais vues à l'avance.
+     * Repéré le 2026-08 en triant manuellement plusieurs milliers de noms
+     * distincts en production (ex. "mozilla/4.0 (compatible; msie 6.0;
+     * windows nt; ms ...", visiblement une chaîne User-Agent complète
+     * collée par erreur comme "nom de bot").
+     */
+    private function looksLikeParsingGarbage(string $agent): bool
+    {
+        $lower = strtolower($agent);
+
+        // Fragment de véritable chaîne User-Agent HTTP, pas un jeton
+        // robots.txt normal (qui est censé être court et simple)
+        if (str_contains($lower, 'mozilla/') || str_contains($lower, 'compatible;')
+            || str_contains($lower, 'windows nt') || str_contains($lower, 'x11;')
+            || str_contains($lower, 'macintosh;')) {
+            return true;
+        }
+
+        // URL embarquée -- un vrai jeton de bot n'en contient jamais
+        if (str_contains($lower, 'http://') || str_contains($lower, 'https://') || str_contains($lower, 'www.')) {
+            return true;
+        }
+
+        // Longueur excessive -- les vrais jetons de bot font quelques
+        // dizaines de caractères tout au plus, jamais une phrase complète
+        if (mb_strlen($agent) > 60) {
+            return true;
+        }
+
+        return false;
+    }
+
     private function unknownAiBotGroupsFromRobots(RobotsTxt $policy): array
     {
         $known = array_map(strtolower(...), Config::AI_BOTS);
@@ -1842,7 +1880,11 @@ final class Scanner
 
         $unknown = [];
         foreach ($policy->declaredUserAgents() as $agent) {
-            if (in_array($agent, $known, true) || in_array($agent, $noise, true)) {
+            $agent = $this->normalizeAgentName($agent);
+            if ($agent === '' || in_array($agent, $known, true) || in_array($agent, $noise, true)) {
+                continue;
+            }
+            if ($this->looksLikeParsingGarbage($agent)) {
                 continue;
             }
             $unknown[] = $agent;
@@ -1850,7 +1892,34 @@ final class Scanner
 
         sort($unknown);
 
-        return $unknown;
+        return array_values(array_unique($unknown));
+    }
+
+    /**
+     * Normalise les variantes Unicode de tirets/espaces avant comparaison
+     * — sans ça, un site utilisant un tiret non-standard (ex. U+2011,
+     * tiret insécable, visuellement identique au tiret ASCII normal) fait
+     * rater la reconnaissance d'un bot pourtant déjà connu (ex.
+     * "perplexity‑user" avec ce tiret spécial ne matchait jamais
+     * "perplexity-user"), le faisant à tort remonter comme "bot inconnu".
+     * Repéré le 2026-08 via un tri manuel de la liste des bots inconnus en
+     * production.
+     */
+    private function normalizeAgentName(string $agent): string
+    {
+        // U+2010..U+2015 (tirets Unicode variés) -> tiret ASCII normal
+        $agent = preg_replace('/[\x{2010}-\x{2015}]/u', '-', $agent) ?? $agent;
+        // Espace insécable (U+00A0) et espaces multiples -> espace simple
+        $agent = preg_replace('/[\x{00A0}\s]+/u', ' ', $agent) ?? $agent;
+        // Suffixe de version ("/1.8.1+cvs", "/2.7"...) -- sans ce nettoyage,
+        // "wget/1.8.1+cvs" ne matche jamais le filtre de bruit "wget" (qui
+        // attend une correspondance exacte), laissant passer à tort des
+        // dizaines de variantes de version du même outil générique comme
+        // autant de "bots" distincts. Repéré le 2026-08 en creusant un
+        // écart de comptage lors du nettoyage rétroactif de la base.
+        $agent = preg_replace('/\/[\d.+_-]+[a-z0-9.]*$/i', '', $agent) ?? $agent;
+
+        return trim($agent);
     }
 
     /** @return array{0: ?string, 1: string[]} [langue par défaut, langues alternatives] */

@@ -43,9 +43,29 @@ final class RobotsTxt
                     $currentAgents = [];
                     $groupOpenForDirectives = false;
                 }
+
+                // Défense contre un robots.txt malformé où "User-agent:" et
+                // "Disallow:"/"Allow:" se retrouvent sur UNE SEULE ligne
+                // physique (site source cassé, pas notre parseur) — sans ce
+                // garde-fou, la ligne entière ("piplbot Disallow: /") finit
+                // à tort comme "nom de bot", polluant unknown_ai_bot_groups
+                // avec du bruit ET perdant la vraie directive de blocage
+                // que le site voulait exprimer. Repéré le 2026-08 via un tri
+                // manuel de la liste des bots inconnus en production.
+                $embeddedDirective = null;
+                if (preg_match('/^(.*?)\s+(disallow|allow)\s*:\s*(.*)$/i', $value, $m) === 1) {
+                    $value = trim($m[1]);
+                    $embeddedDirective = ['field' => strtolower($m[2]), 'value' => trim($m[3])];
+                }
+
                 $agent = strtolower($value);
                 $currentAgents[] = $agent;
                 $this->groups[$agent] ??= ['allow' => [], 'disallow' => []];
+
+                if ($embeddedDirective !== null) {
+                    $this->groups[$agent][$embeddedDirective['field']][] = $embeddedDirective['value'];
+                    $groupOpenForDirectives = true; // la directive récupérée compte comme si elle avait été lue normalement
+                }
             } elseif (($field === 'allow' || $field === 'disallow') && $currentAgents !== []) {
                 foreach ($currentAgents as $agent) {
                     $this->groups[$agent][$field][] = $value;
