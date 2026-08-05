@@ -63,7 +63,41 @@ final class Config
      * données d'entreprise) — tranché en faveur de Piperic par cohérence
      * avec la taxonomie adoptée, mais à garder en tête comme incertain.
      */
+    /**
+     * Piège à copie ("canary trap") : entrée délibérément fictive, jamais
+     * un vrai robot. Objectif : si notre registre de bots est un jour
+     * publié publiquement (dépôt Git ouvert, prévu dans la feuille de
+     * route du projet), et qu'un tiers reprend notre liste sans la
+     * vérifier, ce nom fictif pourrait se retrouver dans SON propre
+     * outil — et donc potentiellement apparaître un jour dans un vrai
+     * robots.txt quelque part sur le web, ce qui serait la preuve d'une
+     * copie non vérifiée de notre travail.
+     *
+     * IMPORTANT : ne JAMAIS ajouter cette entrée à OTHER_BOT_CATEGORIES ni
+     * à KNOWN_NON_AI_USER_AGENTS — elle doit rester détectable comme
+     * "bot inconnu" normal par le pipeline existant. Seule différence :
+     * Statistics::robots() la repère spécifiquement et déclenche une
+     * alerte dédiée dans le rapport si elle apparaît un jour dans un vrai
+     * scan, plutôt que de se noyer silencieusement dans la liste
+     * générale des bots non reconnus.
+     *
+     * Tant que le registre n'est pas publié publiquement, ce piège n'a
+     * structurellement rien à détecter — posé maintenant pour être prêt
+     * le jour où le partage public (Codeberg/GitHub) sera fait.
+     */
+    public const CANARY_BOTS = [
+        ['name' => 'O123-bot', 'fake_description' => "Indexation propriétaire d'O123 Analytics (entité fictive)"],
+    ];
+
     public const OTHER_BOT_CATEGORIES = [
+        // ============ BOT OGPN / PROJET AFFILIÉ ============
+        // Comptés, pas cachés : un site qui mentionne notre bot dans son
+        // robots.txt a pris position à notre égard (autorisé, bloqué...),
+        // information légitime pour notre propre transparence
+        // opérationnelle -- masquer cette donnée serait malhonnête pour un
+        // observatoire qui prône justement la transparence chez les autres.
+        ['pattern' => 'ogpnbot', 'category' => 'own_bot'],
+        ['pattern' => 'euroverifbot', 'category' => 'own_bot'], // projet affilié, confirmé sur euroverif.eu/bot : "recherches menées par OGPN"
         // ============ ENTRAÎNEMENT DE MODÈLE ============
         ['pattern' => 'anthropic-ai', 'category' => 'model_training'],
         ['pattern' => 'ai2bot', 'category' => 'model_training'], // couvre ai2bot-dolma, ai2bot-deepresearcheval passe en user_assistant plus bas
@@ -106,15 +140,16 @@ final class Config
         ['pattern' => 'element451bot', 'category' => 'answer_engine'],
         ['pattern' => 'kernel search', 'category' => 'answer_engine'],
         // ============ ASSISTANT IA (navigation pour un utilisateur) ============
+        ['pattern' => 'gemini-user', 'category' => 'user_assistant'], // équivalent Google de ChatGPT-User, sourcé WebRankInfo (documentation officielle Google citée)
         ['pattern' => 'mistralai-user', 'category' => 'user_assistant'],
         ['pattern' => 'claude-web', 'category' => 'user_assistant'], // corrigé le 2026-08-03 : était classé à tort en entraînement
         ['pattern' => 'duckassistbot', 'category' => 'user_assistant'],
         ['pattern' => 'agi agent', 'category' => 'user_assistant'],
         ['pattern' => 'ai2bot-deepresearcheval', 'category' => 'user_assistant'],
-        ['pattern' => 'amazon bedrock agentcore browser', 'category' => 'user_assistant'],
+        ['pattern' => 'amazonbedrockagentcorebrowser', 'category' => 'user_assistant'],
         ['pattern' => 'amazon-qbusiness', 'category' => 'user_assistant'],
         ['pattern' => 'amzn-user', 'category' => 'user_assistant'],
-        ['pattern' => 'apify website content crawler', 'category' => 'user_assistant'],
+        ['pattern' => 'apifywebsitecontentcrawler', 'category' => 'user_assistant'],
         ['pattern' => 'bedrockbot', 'category' => 'user_assistant'],
         ['pattern' => 'bigsur.ai', 'category' => 'user_assistant'],
         ['pattern' => 'browserbase', 'category' => 'user_assistant'],
@@ -149,7 +184,10 @@ final class Config
         ['pattern' => 'qatechbot', 'category' => 'user_assistant'],
         ['pattern' => 'qualifiedbot', 'category' => 'user_assistant'],
         ['pattern' => 'ryebot', 'category' => 'user_assistant'],
-        ['pattern' => 'mycentralaiscraperbot', 'category' => 'user_assistant'],
+        ['pattern' => 'mycentralaiscraperbot', 'category' => 'model_training'], // ai-robots-txt (CC-BY-SA) prime sur Piperic ici, corrigé le 2026-08-03
+        ['pattern' => 'google-agent', 'category' => 'user_assistant'],
+        ['pattern' => 'operator', 'category' => 'user_assistant'], // agent "Operator" d'OpenAI
+        ['pattern' => 'shap-user', 'category' => 'user_assistant'],
         // ============ AGENT DE NAVIGATION AUTONOME ============
         ['pattern' => 'chatgpt agent', 'category' => 'browsing_agent'],
         ['pattern' => 'gemini-deep-research', 'category' => 'browsing_agent'],
@@ -166,6 +204,7 @@ final class Config
         ['pattern' => 'trae', 'category' => 'browsing_agent'],
         ['pattern' => 'twinagent', 'category' => 'browsing_agent'],
         // ============ INDEXATION (proche IA — moteurs de réponse, RAG) ============
+        ['pattern' => 'petalbot', 'category' => 'search_index'], // Huawei
         ['pattern' => 'omgilibot', 'category' => 'search_index'], // corrigé le 2026-08-03 : était classé à tort en entraînement
         ['pattern' => 'addsearchbot', 'category' => 'search_index'],
         ['pattern' => 'amazon-kendra', 'category' => 'search_index'],
@@ -177,50 +216,60 @@ final class Config
         ['pattern' => 'bravebot', 'category' => 'search_index'],
         ['pattern' => 'channel3bot', 'category' => 'search_index'],
         ['pattern' => 'cloudflare-autorag', 'category' => 'search_index'],
-        ['pattern' => 'googleother-image', 'category' => 'search_index'],
-        ['pattern' => 'googleother-video', 'category' => 'search_index'],
+        ['pattern' => 'googleother-image', 'category' => 'model_training'], // ai-robots-txt (CC-BY-SA) prime sur Piperic ici, corrigé le 2026-08-03
+        ['pattern' => 'googleother-video', 'category' => 'model_training'], // ai-robots-txt (CC-BY-SA) prime sur Piperic ici, corrigé le 2026-08-03
         ['pattern' => 'kagibot', 'category' => 'search_index'],
         ['pattern' => 'linkupbot', 'category' => 'search_index'],
-        ['pattern' => 'poseidon research crawler', 'category' => 'search_index'],
+        ['pattern' => 'poseidon research crawler', 'category' => 'model_training'], // ai-robots-txt (CC-BY-SA) prime sur Piperic ici, corrigé le 2026-08-03
         // ============ REVENDEUR DE DONNÉES ============
         ['pattern' => 'cohere-training-data-crawler', 'category' => 'data_reseller'], // corrigé le 2026-08-03 : était classé à tort en entraînement
         ['pattern' => 'exabot', 'category' => 'data_reseller'], // corrigé le 2026-08-03 : était classé à tort en indexation
         ['pattern' => 'agenttimes', 'category' => 'data_reseller'],
         ['pattern' => 'aiwebindex', 'category' => 'data_reseller'],
         ['pattern' => 'amazonbot-video', 'category' => 'data_reseller'],
-        ['pattern' => 'apifybot', 'category' => 'data_reseller'], // couvre apifywebsitecontentcrawler
+        ['pattern' => 'apifybot', 'category' => 'model_training'], // ai-robots-txt (CC-BY-SA) prime sur Piperic ici -- corrigé le 2026-08-03, l'ancien commentaire "couvre apifywebsitecontentcrawler" était faux (pas de correspondance réelle par sous-chaîne), entrée séparée ajoutée pour ce bot-là
         ['pattern' => 'awario', 'category' => 'data_reseller'],
         ['pattern' => 'chatglm-spider', 'category' => 'data_reseller'],
         ['pattern' => 'chatgpt-browser', 'category' => 'data_reseller'],
         ['pattern' => 'cohere-command', 'category' => 'data_reseller'],
         ['pattern' => 'cragcrawler', 'category' => 'data_reseller'],
-        ['pattern' => 'crawlspace', 'category' => 'data_reseller'],
+        ['pattern' => 'crawlspace', 'category' => 'model_training'], // ai-robots-txt (CC-BY-SA) prime sur Piperic ici, corrigé le 2026-08-03
         ['pattern' => 'datenbank crawler', 'category' => 'data_reseller'],
         ['pattern' => 'doximity-diffbot', 'category' => 'data_reseller'],
         ['pattern' => 'echobot', 'category' => 'data_reseller'], // couvre "echobot bot" et "echoboxbot"
-        ['pattern' => 'firecrawlagent', 'category' => 'data_reseller'],
+        ['pattern' => 'firecrawlagent', 'category' => 'model_training'], // ai-robots-txt (CC-BY-SA) prime sur Piperic ici, corrigé le 2026-08-03
         ['pattern' => 'henkbot', 'category' => 'data_reseller'],
-        ['pattern' => 'imagespider', 'category' => 'data_reseller'],
-        ['pattern' => 'kangaroo bot', 'category' => 'data_reseller'],
-        ['pattern' => 'laion-huggingface-processor', 'category' => 'data_reseller'],
+        ['pattern' => 'imagespider', 'category' => 'model_training'], // ai-robots-txt (CC-BY-SA) prime sur Piperic ici, corrigé le 2026-08-03
+        ['pattern' => 'kangaroo bot', 'category' => 'model_training'], // ai-robots-txt (CC-BY-SA) prime sur Piperic ici, corrigé le 2026-08-03
+        ['pattern' => 'laion-huggingface-processor', 'category' => 'model_training'], // ai-robots-txt (CC-BY-SA) prime sur Piperic ici, corrigé le 2026-08-03
         ['pattern' => 'meta-externalads', 'category' => 'data_reseller'],
         ['pattern' => 'mistralai-index', 'category' => 'data_reseller'],
         ['pattern' => 'mozilla-tabstack', 'category' => 'data_reseller'],
         ['pattern' => 'netestate imprint crawler', 'category' => 'data_reseller'],
-        ['pattern' => 'pangubot', 'category' => 'data_reseller'],
+        ['pattern' => 'pangubot', 'category' => 'model_training'], // ai-robots-txt (CC-BY-SA) prime sur Piperic ici, corrigé le 2026-08-03
         ['pattern' => 'querit', 'category' => 'data_reseller'], // couvre querit-searchbot, queritbot
         ['pattern' => 'sbintuitionsbot', 'category' => 'data_reseller'],
         ['pattern' => 'semrushbot-ocob', 'category' => 'data_reseller'],
         ['pattern' => 'shapbot', 'category' => 'data_reseller'],
         ['pattern' => 'tavilybot', 'category' => 'data_reseller'],
         ['pattern' => 'terracotta', 'category' => 'data_reseller'], // couvre "terra cotta" avec espace aussi
-        ['pattern' => 'thinkbot', 'category' => 'data_reseller'],
+        ['pattern' => 'thinkbot', 'category' => 'model_training'], // ai-robots-txt (CC-BY-SA) prime sur Piperic ici, corrigé le 2026-08-03
         ['pattern' => 'wardbot', 'category' => 'data_reseller'],
         ['pattern' => 'webzio', 'category' => 'data_reseller'], // couvre webzio-extended
         // ============ BOT IA NON DOCUMENTÉ ============
+        // Tagués "Autre" par ai-robots-txt lui-même (pas "Enrichissement
+        // LLM" ni une autre catégorie précise) -- classés ici par
+        // cohérence avec leur propre incertitude, pas la nôtre.
+        ['pattern' => 'echoboxbot', 'category' => 'undocumented'],
+        ['pattern' => 'tongyibot', 'category' => 'undocumented'],
+        ['pattern' => 'useai', 'category' => 'undocumented'],
+        ['pattern' => 'wpbot', 'category' => 'undocumented'],
+        ['pattern' => 'yak', 'category' => 'undocumented'],
+        ['pattern' => 'yiyanbot', 'category' => 'undocumented'],
+        ['pattern' => 'zanistabot', 'category' => 'undocumented'],
         ['pattern' => 'aranet-searchbot', 'category' => 'undocumented'],
         ['pattern' => 'buddybot', 'category' => 'undocumented'],
-        ['pattern' => 'crawl4ai', 'category' => 'undocumented'],
+        ['pattern' => 'crawl4ai', 'category' => 'model_training'], // ai-robots-txt (CC-BY-SA) prime sur Piperic ici, corrigé le 2026-08-03
         ['pattern' => 'iaskbot', 'category' => 'undocumented'], // couvre iaskspider (sans /2.0)
         ['pattern' => 'kunatocrawler', 'category' => 'undocumented'],
         ['pattern' => 'quillbot', 'category' => 'undocumented'],
@@ -240,6 +289,7 @@ final class Config
         ['pattern' => 'webcopier', 'category' => 'archiving_tool'],
         ['pattern' => 'webzip', 'category' => 'archiving_tool'],
         // ============ QUALITÉ PUBLICITAIRE ============
+        ['pattern' => 'oai-adsbot', 'category' => 'ads_quality'], // OpenAI, vérifie la pertinence des pages soumises comme publicités sur ChatGPT -- PAS de l'entraînement, sourcé WebRankInfo (documentation officielle OpenAI citée)
         ['pattern' => 'adsbot-google', 'category' => 'ads_quality'],
         // ============ INFRASTRUCTURE ============
         ['pattern' => 'cloudflarebrowserrenderingcrawler', 'category' => 'infrastructure'],
