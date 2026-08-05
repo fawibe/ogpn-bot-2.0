@@ -43,52 +43,206 @@ final class Config
      * Classification des bots RENCONTRÉS DANS ROBOTS.TXT mais absents des
      * 21 bots IA "vedettes" ci-dessus (Scanner::unknownAiBotGroupsFromRobots) —
      * pour distinguer, parmi cette liste ouverte, ce qui relève réellement
-     * de l'IA (entraînement, assistant) de ce qui n'en relève pas (SEO,
-     * indexation classique, cadre de scraping générique, archivage,
-     * publicité, infrastructure, données d'entreprise). Recherche par
-     * sous-chaîne, insensible à la casse — même mécanique que
-     * KNOWN_PROVIDERS côté hébergement.
+     * de l'IA (entraînement, assistants, agents) de ce qui n'en relève pas
+     * (SEO, archivage, publicité, infrastructure). Recherche par
+     * sous-chaîne, insensible à la casse.
      *
-     * Chaque entrée vérifiée individuellement via source réelle avant
-     * ajout (2026-08) — liste non exhaustive, à enrichir au fil du temps
-     * à mesure que de nouveaux noms apparaissent dans les scans.
+     * Taxonomie IA (7 premières catégories) reprise et traduite de
+     * piperic.com/tools/ai-bots (page publique consultée le 2026-08-03,
+     * plus rigoureuse que notre première tentative — inspiration/vérification
+     * croisée, pas import massif de leur base propriétaire ; licence de
+     * réutilisation non confirmée, d'où le choix de ne reprendre que les
+     * noms de bots vus sur leur page publique, pas leurs statistiques de
+     * trafic). Catégories non-IA (SEO, scraping, archivage, publicité,
+     * infrastructure) conservées de notre propre travail, absentes de leur
+     * registre qui reste centré IA.
+     *
+     * Chaque entrée vérifiée avant ajout dans la mesure du possible —
+     * un désaccord connu subsiste sur 'aihitbot' (Piperic : entraînement
+     * de modèle ; notre propre recherche du 2026-08-03 : agrégation de
+     * données d'entreprise) — tranché en faveur de Piperic par cohérence
+     * avec la taxonomie adoptée, mais à garder en tête comme incertain.
      */
     public const OTHER_BOT_CATEGORIES = [
-        // -- Entraînement IA (au sens large : modèles de langage, vision, recommandation) --
-        ['pattern' => 'anthropic-ai', 'category' => 'ai_training'],       // identifiant historique Anthropic, remplacé depuis par ClaudeBot
-        ['pattern' => 'claude-web', 'category' => 'ai_training'],         // identifiant historique Anthropic, remplacé depuis par Claude-User
-        ['pattern' => 'ai2bot', 'category' => 'ai_training'],             // Allen Institute for AI — inclut ai2bot-dolma
-        ['pattern' => 'cohere-training-data-crawler', 'category' => 'ai_training'],
-        ['pattern' => 'img2dataset', 'category' => 'ai_training'],        // constitution de jeux de données image pour l'entraînement
-        ['pattern' => 'omgilibot', 'category' => 'ai_training'],          // variante d'omgili, déjà citée dans des robots.txt "anti-IA" type
-        ['pattern' => 'tiktokspider', 'category' => 'ai_training'],       // ByteDance, alimente entre autres leurs systèmes de recommandation
-        ['pattern' => 'timpibot', 'category' => 'ai_training'],
-        // -- Assistant IA (navigation/recherche pilotée par un assistant, pas de l'entraînement) --
-        ['pattern' => 'duckassistbot', 'category' => 'ai_assistant'],     // DuckDuckGo AI Assist
-        ['pattern' => 'mycentralaiscraperbot', 'category' => 'ai_assistant'],
-        // -- Outils SEO (analyse, pas entraînement de modèle) --
-        ['pattern' => 'rogerbot', 'category' => 'seo_tool'],              // Moz
-        ['pattern' => 'ahrefssiteaudit', 'category' => 'seo_tool'],       // Ahrefs
-        ['pattern' => 'semrushbot', 'category' => 'seo_tool'],           // SEMrush (couvre -sa/-swa/etc.)
+        // ============ ENTRAÎNEMENT DE MODÈLE ============
+        ['pattern' => 'anthropic-ai', 'category' => 'model_training'],
+        ['pattern' => 'ai2bot', 'category' => 'model_training'], // couvre ai2bot-dolma, ai2bot-deepresearcheval passe en user_assistant plus bas
+        ['pattern' => 'aihitbot', 'category' => 'model_training'], // désaccord connu avec notre recherche initiale (business_data) -- voir note ci-dessus
+        ['pattern' => 'img2dataset', 'category' => 'model_training'],
+        ['pattern' => 'tiktokspider', 'category' => 'model_training'],
+        ['pattern' => 'timpibot', 'category' => 'model_training'],
+        ['pattern' => 'deepseekbot', 'category' => 'model_training'],
+        ['pattern' => 'brightbot 1.0', 'category' => 'model_training'],
+        ['pattern' => 'brandwatch', 'category' => 'model_training'],
+        ['pattern' => 'awariosmartbot', 'category' => 'model_training'],
+        ['pattern' => 'big sur ai', 'category' => 'model_training'],
+        ['pattern' => 'borderxbot', 'category' => 'model_training'],
+        ['pattern' => 'citibotsitecrawler', 'category' => 'model_training'],
+        ['pattern' => 'cloudflare crawler', 'category' => 'model_training'],
+        ['pattern' => 'cotoyogi', 'category' => 'model_training'],
+        ['pattern' => 'factset_spyderbot', 'category' => 'model_training'],
+        ['pattern' => 'fishbot', 'category' => 'model_training'],
+        ['pattern' => 'friendlycrawler', 'category' => 'model_training'],
+        ['pattern' => 'icc-crawler', 'category' => 'model_training'],
+        ['pattern' => 'isscyberriskcrawler', 'category' => 'model_training'],
+        ['pattern' => 'kimibot', 'category' => 'model_training'],
+        ['pattern' => 'laiondownloader', 'category' => 'model_training'],
+        ['pattern' => 'liner-bot', 'category' => 'model_training'],
+        ['pattern' => 'linguee bot', 'category' => 'model_training'],
+        ['pattern' => 'novellum ai crawl', 'category' => 'model_training'],
+        ['pattern' => 'panscient', 'category' => 'model_training'], // couvre panscient.com
+        ['pattern' => 'payroll-bot', 'category' => 'model_training'],
+        ['pattern' => 'scrapy', 'category' => 'model_training'],
+        ['pattern' => 'selectika ai', 'category' => 'model_training'],
+        ['pattern' => 'semrushbotswa', 'category' => 'model_training'],
+        ['pattern' => 'sidetrade indexer bot', 'category' => 'model_training'],
+        ['pattern' => 'velenpublicwebcrawler', 'category' => 'model_training'],
+        ['pattern' => 'yandexadditional', 'category' => 'model_training'], // couvre yandexadditionalbot
+        ['pattern' => 'ygs group falconer scraper', 'category' => 'model_training'],
+        // ============ MOTEUR DE RÉPONSE IA ============
+        ['pattern' => 'ai search', 'category' => 'answer_engine'], // couvre "ai search external"
+        ['pattern' => 'alphalens bot', 'category' => 'answer_engine'],
+        ['pattern' => 'direqt anomura', 'category' => 'answer_engine'],
+        ['pattern' => 'element451bot', 'category' => 'answer_engine'],
+        ['pattern' => 'kernel search', 'category' => 'answer_engine'],
+        // ============ ASSISTANT IA (navigation pour un utilisateur) ============
+        ['pattern' => 'mistralai-user', 'category' => 'user_assistant'],
+        ['pattern' => 'claude-web', 'category' => 'user_assistant'], // corrigé le 2026-08-03 : était classé à tort en entraînement
+        ['pattern' => 'duckassistbot', 'category' => 'user_assistant'],
+        ['pattern' => 'agi agent', 'category' => 'user_assistant'],
+        ['pattern' => 'ai2bot-deepresearcheval', 'category' => 'user_assistant'],
+        ['pattern' => 'amazon bedrock agentcore browser', 'category' => 'user_assistant'],
+        ['pattern' => 'amazon-qbusiness', 'category' => 'user_assistant'],
+        ['pattern' => 'amzn-user', 'category' => 'user_assistant'],
+        ['pattern' => 'apify website content crawler', 'category' => 'user_assistant'],
+        ['pattern' => 'bedrockbot', 'category' => 'user_assistant'],
+        ['pattern' => 'bigsur.ai', 'category' => 'user_assistant'],
+        ['pattern' => 'browserbase', 'category' => 'user_assistant'],
+        ['pattern' => 'chathive crawler', 'category' => 'user_assistant'],
+        ['pattern' => 'cledara saas management agent', 'category' => 'user_assistant'],
+        ['pattern' => 'cloudflare browser run', 'category' => 'user_assistant'],
+        ['pattern' => 'easyscan', 'category' => 'user_assistant'],
+        ['pattern' => 'facebookexternalhit', 'category' => 'user_assistant'],
+        ['pattern' => 'firmlyai bot', 'category' => 'user_assistant'],
+        ['pattern' => 'geisthaus-pagefetcher', 'category' => 'user_assistant'],
+        ['pattern' => 'google-firebase', 'category' => 'user_assistant'],
+        ['pattern' => 'google-notebooklm', 'category' => 'user_assistant'], // couvre notebooklm seul
+        ['pattern' => 'googleagent-urlcontext', 'category' => 'user_assistant'],
+        ['pattern' => 'harkbot', 'category' => 'user_assistant'],
+        ['pattern' => 'henry shopping agent', 'category' => 'user_assistant'],
+        ['pattern' => 'hifibot', 'category' => 'user_assistant'],
+        ['pattern' => 'iaskspider/2.0', 'category' => 'user_assistant'],
+        ['pattern' => 'instapaper', 'category' => 'user_assistant'],
+        ['pattern' => 'kagi-fetcher', 'category' => 'user_assistant'],
+        ['pattern' => 'kimi-user', 'category' => 'user_assistant'],
+        ['pattern' => 'klaviyoaibot', 'category' => 'user_assistant'],
+        ['pattern' => 'linerbot', 'category' => 'user_assistant'],
+        ['pattern' => 'manus bot', 'category' => 'user_assistant'],
+        ['pattern' => 'meta-externalfetcher', 'category' => 'user_assistant'],
+        ['pattern' => 'meta-webindexer', 'category' => 'user_assistant'],
+        ['pattern' => 'nagetbot', 'category' => 'user_assistant'],
+        ['pattern' => 'nava labs asp', 'category' => 'user_assistant'],
+        ['pattern' => 'newsai', 'category' => 'user_assistant'],
+        ['pattern' => 'payhawk invoice fetching agent', 'category' => 'user_assistant'],
+        ['pattern' => 'phindbot', 'category' => 'user_assistant'],
+        ['pattern' => 'poggio-citations', 'category' => 'user_assistant'],
+        ['pattern' => 'qatechbot', 'category' => 'user_assistant'],
+        ['pattern' => 'qualifiedbot', 'category' => 'user_assistant'],
+        ['pattern' => 'ryebot', 'category' => 'user_assistant'],
+        ['pattern' => 'mycentralaiscraperbot', 'category' => 'user_assistant'],
+        // ============ AGENT DE NAVIGATION AUTONOME ============
+        ['pattern' => 'chatgpt agent', 'category' => 'browsing_agent'],
+        ['pattern' => 'gemini-deep-research', 'category' => 'browsing_agent'],
+        ['pattern' => 'amazonbuyforme', 'category' => 'browsing_agent'],
+        ['pattern' => 'claude-code', 'category' => 'browsing_agent'],
+        ['pattern' => 'cursor', 'category' => 'browsing_agent'],
+        ['pattern' => 'devin', 'category' => 'browsing_agent'],
+        ['pattern' => 'google-cloudvertexbot', 'category' => 'browsing_agent'],
+        ['pattern' => 'google-gemini-cli', 'category' => 'browsing_agent'],
+        ['pattern' => 'googleagent-mariner', 'category' => 'browsing_agent'],
+        ['pattern' => 'manus-user', 'category' => 'browsing_agent'],
+        ['pattern' => 'novaact', 'category' => 'browsing_agent'],
+        ['pattern' => 'opencode', 'category' => 'browsing_agent'],
+        ['pattern' => 'trae', 'category' => 'browsing_agent'],
+        ['pattern' => 'twinagent', 'category' => 'browsing_agent'],
+        // ============ INDEXATION (proche IA — moteurs de réponse, RAG) ============
+        ['pattern' => 'omgilibot', 'category' => 'search_index'], // corrigé le 2026-08-03 : était classé à tort en entraînement
+        ['pattern' => 'addsearchbot', 'category' => 'search_index'],
+        ['pattern' => 'amazon-kendra', 'category' => 'search_index'],
+        ['pattern' => 'amzn-searchbot', 'category' => 'search_index'],
+        ['pattern' => 'andibot', 'category' => 'search_index'],
+        ['pattern' => 'anomura', 'category' => 'search_index'],
+        ['pattern' => 'atlassian-bot', 'category' => 'search_index'],
+        ['pattern' => 'azureai-searchbot', 'category' => 'search_index'],
+        ['pattern' => 'bravebot', 'category' => 'search_index'],
+        ['pattern' => 'channel3bot', 'category' => 'search_index'],
+        ['pattern' => 'cloudflare-autorag', 'category' => 'search_index'],
+        ['pattern' => 'googleother-image', 'category' => 'search_index'],
+        ['pattern' => 'googleother-video', 'category' => 'search_index'],
+        ['pattern' => 'kagibot', 'category' => 'search_index'],
+        ['pattern' => 'linkupbot', 'category' => 'search_index'],
+        ['pattern' => 'poseidon research crawler', 'category' => 'search_index'],
+        // ============ REVENDEUR DE DONNÉES ============
+        ['pattern' => 'cohere-training-data-crawler', 'category' => 'data_reseller'], // corrigé le 2026-08-03 : était classé à tort en entraînement
+        ['pattern' => 'exabot', 'category' => 'data_reseller'], // corrigé le 2026-08-03 : était classé à tort en indexation
+        ['pattern' => 'agenttimes', 'category' => 'data_reseller'],
+        ['pattern' => 'aiwebindex', 'category' => 'data_reseller'],
+        ['pattern' => 'amazonbot-video', 'category' => 'data_reseller'],
+        ['pattern' => 'apifybot', 'category' => 'data_reseller'], // couvre apifywebsitecontentcrawler
+        ['pattern' => 'awario', 'category' => 'data_reseller'],
+        ['pattern' => 'chatglm-spider', 'category' => 'data_reseller'],
+        ['pattern' => 'chatgpt-browser', 'category' => 'data_reseller'],
+        ['pattern' => 'cohere-command', 'category' => 'data_reseller'],
+        ['pattern' => 'cragcrawler', 'category' => 'data_reseller'],
+        ['pattern' => 'crawlspace', 'category' => 'data_reseller'],
+        ['pattern' => 'datenbank crawler', 'category' => 'data_reseller'],
+        ['pattern' => 'doximity-diffbot', 'category' => 'data_reseller'],
+        ['pattern' => 'echobot', 'category' => 'data_reseller'], // couvre "echobot bot" et "echoboxbot"
+        ['pattern' => 'firecrawlagent', 'category' => 'data_reseller'],
+        ['pattern' => 'henkbot', 'category' => 'data_reseller'],
+        ['pattern' => 'imagespider', 'category' => 'data_reseller'],
+        ['pattern' => 'kangaroo bot', 'category' => 'data_reseller'],
+        ['pattern' => 'laion-huggingface-processor', 'category' => 'data_reseller'],
+        ['pattern' => 'meta-externalads', 'category' => 'data_reseller'],
+        ['pattern' => 'mistralai-index', 'category' => 'data_reseller'],
+        ['pattern' => 'mozilla-tabstack', 'category' => 'data_reseller'],
+        ['pattern' => 'netestate imprint crawler', 'category' => 'data_reseller'],
+        ['pattern' => 'pangubot', 'category' => 'data_reseller'],
+        ['pattern' => 'querit', 'category' => 'data_reseller'], // couvre querit-searchbot, queritbot
+        ['pattern' => 'sbintuitionsbot', 'category' => 'data_reseller'],
+        ['pattern' => 'semrushbot-ocob', 'category' => 'data_reseller'],
+        ['pattern' => 'shapbot', 'category' => 'data_reseller'],
+        ['pattern' => 'tavilybot', 'category' => 'data_reseller'],
+        ['pattern' => 'terracotta', 'category' => 'data_reseller'], // couvre "terra cotta" avec espace aussi
+        ['pattern' => 'thinkbot', 'category' => 'data_reseller'],
+        ['pattern' => 'wardbot', 'category' => 'data_reseller'],
+        ['pattern' => 'webzio', 'category' => 'data_reseller'], // couvre webzio-extended
+        // ============ BOT IA NON DOCUMENTÉ ============
+        ['pattern' => 'aranet-searchbot', 'category' => 'undocumented'],
+        ['pattern' => 'buddybot', 'category' => 'undocumented'],
+        ['pattern' => 'crawl4ai', 'category' => 'undocumented'],
+        ['pattern' => 'iaskbot', 'category' => 'undocumented'], // couvre iaskspider (sans /2.0)
+        ['pattern' => 'kunatocrawler', 'category' => 'undocumented'],
+        ['pattern' => 'quillbot', 'category' => 'undocumented'],
+        ['pattern' => 'umaibot', 'category' => 'undocumented'],
+        ['pattern' => 'wrtnbot', 'category' => 'undocumented'],
+        // ============ OUTILS SEO (hors registre IA, notre propre travail) ============
+        ['pattern' => 'rogerbot', 'category' => 'seo_tool'],
+        ['pattern' => 'ahrefssiteaudit', 'category' => 'seo_tool'],
+        ['pattern' => 'semrushbot', 'category' => 'seo_tool'], // couvre les variantes -sa, -swa déjà classées plus haut en model_training/user_assistant, celle-ci sert de repli générique
         ['pattern' => 'screaming frog', 'category' => 'seo_tool'],
         ['pattern' => 'seokicks', 'category' => 'seo_tool'],
         ['pattern' => 'dataforseobot', 'category' => 'seo_tool'],
-        ['pattern' => 'barkrowler', 'category' => 'seo_tool'],           // Babbar
-        // -- Indexation moteur de recherche classique --
-        ['pattern' => 'exabot', 'category' => 'search_index'],
-        ['pattern' => 'googleother', 'category' => 'search_index'],      // googleother-image/-video : variantes de GoogleOther
-        // -- Cadres de scraping génériques (pas un service précis, une bibliothèque) --
-        ['pattern' => 'scrapy', 'category' => 'scraping_framework'],
-        ['pattern' => 'nutch', 'category' => 'scraping_framework'],      // Apache Nutch
-        // -- Archivage/copie de site hors-ligne --
+        ['pattern' => 'barkrowler', 'category' => 'seo_tool'],
+        // ============ CADRES DE SCRAPING GÉNÉRIQUES ============
+        ['pattern' => 'nutch', 'category' => 'scraping_framework'],
+        // ============ ARCHIVAGE DE SITE ============
         ['pattern' => 'webcopier', 'category' => 'archiving_tool'],
         ['pattern' => 'webzip', 'category' => 'archiving_tool'],
-        // -- Qualité publicitaire (vérification d'annonces, pas indexation générale) --
+        // ============ QUALITÉ PUBLICITAIRE ============
         ['pattern' => 'adsbot-google', 'category' => 'ads_quality'],
-        // -- Infrastructure (CDN/plateforme, pas un service métier en soi) --
+        // ============ INFRASTRUCTURE ============
         ['pattern' => 'cloudflarebrowserrenderingcrawler', 'category' => 'infrastructure'],
-        // -- Données d'entreprise (profils d'entreprises, pas de l'entraînement de modèle) --
-        ['pattern' => 'aihitbot', 'category' => 'business_data'],
     ];
 
     /**
