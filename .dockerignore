@@ -1,0 +1,17 @@
+.git
+.github
+.env
+storage/cache/*
+storage/logs/*
+storage/reports/*
+storage/runtime/*
+storage/secrets/*
+tests
+Analysis
+*.md
+render.yaml
+
+!storage/cache/.gitkeep
+!storage/logs/.gitkeep
+!storage/reports/.gitkeep
+!storage/runtime/.gitkeep
