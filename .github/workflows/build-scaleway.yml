@@ -1,0 +1,50 @@
+name: Build OGPN-BOT image for Scaleway
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: scaleway-container-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  REGISTRY: rg.fr-par.scw.cloud
+  NAMESPACE: ogpn
+  IMAGE_NAME: ogpn-web-scanner
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Scaleway Container Registry
+        shell: bash
+        run: |
+          echo "${{ secrets.SCW_SECRET_KEY }}" | docker login \
+            "$REGISTRY/$NAMESPACE" \
+            --username nologin \
+            --password-stdin
+
+      - name: Build image
+        shell: bash
+        run: |
+          docker build \
+            --platform linux/amd64 \
+            --tag "$REGISTRY/$NAMESPACE/$IMAGE_NAME:latest" \
+            --tag "$REGISTRY/$NAMESPACE/$IMAGE_NAME:${GITHUB_SHA}" \
+            .
+
+      - name: Push image
+        shell: bash
+        run: |
+          docker push "$REGISTRY/$NAMESPACE/$IMAGE_NAME:latest"
+          docker push "$REGISTRY/$NAMESPACE/$IMAGE_NAME:${GITHUB_SHA}"
