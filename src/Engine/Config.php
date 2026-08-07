@@ -90,6 +90,160 @@ final class Config
     ];
 
     public const OTHER_BOT_CATEGORIES = [
+        // ============ BOT OBSOLÈTE / HISTORIQUE ============
+        // Logiciels d'aspiration de site et gestionnaires de téléchargement
+        // des années 1998-2008, tous abandonnés depuis longtemps -- signal
+        // de gouvernance en soi (un robots.txt jamais retouché depuis sa
+        // création, probablement recopié d'un vieux modèle "bloque tous
+        // les mauvais robots"). Volontairement VISIBLE, pas filtré comme
+        // du bruit pur -- contrairement à wget/curl (outils génériques
+        // actuels), ici l'obsolescence elle-même est l'information.
+        ['pattern' => 'xenu', 'category' => 'obsolete'],
+        ['pattern' => 'eirgrabber', 'category' => 'obsolete'],
+        ['pattern' => 'teleport', 'category' => 'obsolete'], // couvre teleport/teleportpro/"teleport pro"
+        ['pattern' => 'netmechanic', 'category' => 'obsolete'],
+        ['pattern' => 'crescent', 'category' => 'obsolete'],
+        ['pattern' => 'microsoft url control', 'category' => 'obsolete'],
+        ['pattern' => 'microsoft.url.control', 'category' => 'obsolete'],
+        ['pattern' => 'vci', 'category' => 'obsolete'], // VCI WebViewer
+        ['pattern' => 'zeus', 'category' => 'obsolete'], // couvre "Zeus", "Zeus Link Scout", "Zeus NNNNN Webster Pro..."
+        ['pattern' => 'webster pro', 'category' => 'obsolete'],
+        ['pattern' => 'grub', 'category' => 'obsolete'], // grub / grub-client, projet de recherche distribué disparu
+        ['pattern' => 'offline explorer', 'category' => 'obsolete'],
+        ['pattern' => 'offline navigator', 'category' => 'obsolete'],
+        ['pattern' => 'netants', 'category' => 'obsolete'],
+        ['pattern' => 'netspider', 'category' => 'obsolete'],
+        ['pattern' => 'netzip', 'category' => 'obsolete'],
+        ['pattern' => 'wwwoffle', 'category' => 'obsolete'],
+        ['pattern' => 'webwhacker', 'category' => 'obsolete'],
+        ['pattern' => 'webleacher', 'category' => 'obsolete'],
+        ['pattern' => 'jetcar', 'category' => 'obsolete'],
+        ['pattern' => 'pavuk', 'category' => 'obsolete'],
+        ['pattern' => 'interget', 'category' => 'obsolete'],
+        ['pattern' => 'hmview', 'category' => 'obsolete'],
+        ['pattern' => 'voideye', 'category' => 'obsolete'],
+        ['pattern' => 'grafula', 'category' => 'obsolete'],
+        ['pattern' => 'grabnet', 'category' => 'obsolete'],
+        ['pattern' => 'surfbot', 'category' => 'obsolete'],
+        ['pattern' => 'navroad', 'category' => 'obsolete'],
+        ['pattern' => 'eyenetie', 'category' => 'obsolete'],
+        ['pattern' => 'leechftp', 'category' => 'obsolete'],
+        ['pattern' => 'pcbrowser', 'category' => 'obsolete'],
+        ['pattern' => 'chinaclaw', 'category' => 'obsolete'],
+        ['pattern' => 'pagegrabber', 'category' => 'obsolete'],
+        ['pattern' => 'webfetch', 'category' => 'obsolete'],
+        ['pattern' => 'smartdownload', 'category' => 'obsolete'],
+        ['pattern' => 'realdownload', 'category' => 'obsolete'],
+        ['pattern' => 'robozilla', 'category' => 'obsolete'],
+        ['pattern' => 'internet ninja', 'category' => 'obsolete'],
+        ['pattern' => 'midown tool', 'category' => 'obsolete'],
+        ['pattern' => 'download ninja', 'category' => 'obsolete'],
+        ['pattern' => 'download demon', 'category' => 'obsolete'],
+        ['pattern' => 'mass downloader', 'category' => 'obsolete'],
+        ['pattern' => 'express webpictures', 'category' => 'obsolete'],
+        ['pattern' => 'image stripper', 'category' => 'obsolete'],
+        ['pattern' => 'image sucker', 'category' => 'obsolete'],
+        ['pattern' => 'web sucker', 'category' => 'obsolete'],
+        ['pattern' => 'web image collector', 'category' => 'obsolete'],
+        ['pattern' => 'website extractor', 'category' => 'obsolete'],
+        ['pattern' => 'website quester', 'category' => 'obsolete'],
+        ['pattern' => 'net vampire', 'category' => 'obsolete'],
+        ['pattern' => 'xaldon webspider', 'category' => 'obsolete'],
+        ['pattern' => 'joc web spider', 'category' => 'obsolete'],
+        ['pattern' => 'papa foto', 'category' => 'obsolete'],
+        ['pattern' => 'webgo is', 'category' => 'obsolete'],
+        ['pattern' => 'blackwidow', 'category' => 'obsolete'],
+        ['pattern' => 'superbot', 'category' => 'obsolete'],
+        ['pattern' => 'ecatch', 'category' => 'obsolete'],
+        ['pattern' => 'zealbot', 'category' => 'obsolete'],
+        ['pattern' => 'superhttp', 'category' => 'obsolete'],
+        ['pattern' => 'fasterfox', 'category' => 'obsolete'], // extension Firefox abandonnée
+        ['pattern' => 'cliqzbot', 'category' => 'obsolete'], // navigateur Cliqz arrêté en 2020
+        ['pattern' => 'mister pix', 'category' => 'obsolete'],
+        ['pattern' => 'thenomad', 'category' => 'obsolete'],
+        ['pattern' => 'mata hari', 'category' => 'obsolete'],
+        ['pattern' => 'the intraformant', 'category' => 'obsolete'],
+        ['pattern' => 'urly warning', 'category' => 'obsolete'],
+        ['pattern' => 'moget', 'category' => 'obsolete'],
+        ['pattern' => 'repomonkey', 'category' => 'obsolete'],
+        ['pattern' => 'queryn metasearch', 'category' => 'obsolete'],
+        ['pattern' => 'erocrawler', 'category' => 'obsolete'],
+        ['pattern' => 'kenjin spider', 'category' => 'obsolete'],
+        ['pattern' => 'lnspiderguy', 'category' => 'obsolete'],
+        ['pattern' => 'wotbox', 'category' => 'obsolete'],
+        ['pattern' => 'cutestat', 'category' => 'obsolete'],
+        ['pattern' => 'yahoo-mmcrawler', 'category' => 'obsolete'],
+        ['pattern' => 'webmasterworld', 'category' => 'obsolete'], // couvre "WebmasterWorld Extractor" / "WebmasterWorldForumBot"
+        ['pattern' => 'netmechanic', 'category' => 'obsolete'],
+        ['pattern' => 'megaindex', 'category' => 'obsolete'], // outil SEO russe largement abandonné -- couvre megaindex/megaindex.ru
+        ['pattern' => 'fyberspider', 'category' => 'obsolete'],
+        ['pattern' => 'proximic', 'category' => 'obsolete'],
+        ['pattern' => 'metajobbot', 'category' => 'obsolete'],
+        ['pattern' => "xenu's", 'category' => 'obsolete'],
+        ['pattern' => 'alexibot', 'category' => 'obsolete'],
+        ['pattern' => 'zyborg', 'category' => 'obsolete'], // WISEnut, moteur disparu
+        ['pattern' => 'radiation retriever', 'category' => 'obsolete'],
+        ['pattern' => 'flaming attackbot', 'category' => 'obsolete'],
+        ['pattern' => 'fairad client', 'category' => 'obsolete'],
+        ['pattern' => 'tighttwatbot', 'category' => 'obsolete'],
+        ['pattern' => 'meanpathbot', 'category' => 'obsolete'], // Meanpath, racheté puis disparu
+        ['pattern' => 'blowfish', 'category' => 'obsolete'],
+        ['pattern' => 'linkextractorpro', 'category' => 'obsolete'],
+        ['pattern' => 'bunnyslippers', 'category' => 'obsolete'],
+        ['pattern' => 'bullseye', 'category' => 'obsolete'],
+        ['pattern' => 'spankbot', 'category' => 'obsolete'],
+        ['pattern' => 'botalot', 'category' => 'obsolete'],
+        ['pattern' => 'dittospyder', 'category' => 'obsolete'],
+        ['pattern' => 'jennybot', 'category' => 'obsolete'],
+        ['pattern' => 'turingos', 'category' => 'obsolete'],
+        ['pattern' => 'miixpc', 'category' => 'obsolete'],
+        ['pattern' => 'true_robot', 'category' => 'obsolete'],
+        ['pattern' => 'infonavirobot', 'category' => 'obsolete'],
+        ['pattern' => 'propowerbot', 'category' => 'obsolete'],
+        ['pattern' => 'domaincrawler', 'category' => 'obsolete'],
+        ['pattern' => 'suzuran', 'category' => 'obsolete'],
+        ['pattern' => 'nicerspro', 'category' => 'obsolete'],
+        ['pattern' => 'backdoorbot', 'category' => 'obsolete'],
+        ['pattern' => 'hloader', 'category' => 'obsolete'],
+        ['pattern' => 'telesoft', 'category' => 'obsolete'],
+        ['pattern' => 'harvest', 'category' => 'obsolete'],
+        ['pattern' => 'cheesebot', 'category' => 'obsolete'],
+        ['pattern' => 'www-collector-e', 'category' => 'obsolete'],
+        ['pattern' => 'asterias', 'category' => 'obsolete'],
+        ['pattern' => 'prowebwalker', 'category' => 'obsolete'],
+        ['pattern' => 'webbandit', 'category' => 'obsolete'],
+        ['pattern' => 'spanner', 'category' => 'obsolete'],
+        ['pattern' => 'builtbottough', 'category' => 'obsolete'],
+        // ============ CADRE DE SCRAPING (ajout) ============
+        ['pattern' => 'bubing', 'category' => 'scraping_framework'], // BUbiNG, crawler académique (LAW/Univ. Milan), toujours documenté -- pas "obsolète", framework de recherche
+        // ============ AUTRES SERVICES IDENTIFIABLES (ajout, moteurs de recherche/SEO actuels confirmés) ============
+        ['pattern' => 'seekport', 'category' => 'search_index'], // Seekport, moteur allemand actif -- couvre "seekportbot"/"seekport crawler"
+        ['pattern' => 'mail.ru', 'category' => 'search_index'], // moteur russe actif
+        ['pattern' => 'tineye', 'category' => 'search_index'], // recherche d'image inversée
+        ['pattern' => 'ecosia', 'category' => 'search_index'], // moteur "écologique" actif
+        ['pattern' => 'qwant', 'category' => 'search_index'], // couvre qwantbot/qwantify
+        ['pattern' => 'coccocbot', 'category' => 'search_index'], // Cốc Cốc, moteur vietnamien actif
+        ['pattern' => 'teoma', 'category' => 'search_index'], // ancien moteur Ask.com, historique mais réel
+        ['pattern' => 'youdaobot', 'category' => 'search_index'], // Youdao/NetEase, Chine
+        ['pattern' => 'oracle ultra search', 'category' => 'search_index'],
+        ['pattern' => 'sogou', 'category' => 'search_index'], // couvre sogou spider/sogouspider/sogou web spider
+        ['pattern' => '360spider', 'category' => 'search_index'], // Qihoo 360, Chine
+        ['pattern' => 'naverbot', 'category' => 'search_index'], // Naver, Corée du Sud
+        ['pattern' => 'openfind', 'category' => 'search_index'], // Taïwan
+        ['pattern' => 'yahoo-blogs', 'category' => 'search_index'],
+        ['pattern' => 'yandeximages', 'category' => 'search_index'],
+        ['pattern' => 'sosospider', 'category' => 'search_index'], // ex-Soso Tencent, fusionné dans Sogou depuis
+        ['pattern' => 'linkdexbot', 'category' => 'seo_tool'], // Linkdex, outil SEO (racheté/discontinué depuis, mais différent des "obsolètes" grand public ci-dessus)
+        ['pattern' => 'serankingbacklinksbot', 'category' => 'seo_tool'], // SE Ranking
+        ['pattern' => 'searchmetricsbot', 'category' => 'seo_tool'], // Searchmetrics
+        ['pattern' => 'backlinkcrawler', 'category' => 'seo_tool'],
+        ['pattern' => 'ltx71', 'category' => 'other_service'], // recherche en sécurité (ltx71.com)
+        ['pattern' => 'aliyunsecbot', 'category' => 'other_service'], // Alibaba Cloud, scanner de sécurité
+        ['pattern' => 'sitecheck.internetseer.com', 'category' => 'other_service'], // surveillance de disponibilité
+        ['pattern' => 'twenga', 'category' => 'data_reseller'], // comparateur de prix français -- couvre twengabot/"twengabot-2.0" (version retirée)/"twengabot-discover" (gamme distincte, PAS une version)
+        ['pattern' => 'grapeshot', 'category' => 'data_reseller'], // ciblage publicitaire contextuel
+        ['pattern' => 'libwww', 'category' => 'scraping_framework'], // bibliothèque Perl/C générique, comme lwp-trivial
+        ['pattern' => 'lwp-trivial', 'category' => 'scraping_framework'],
         // ============ BOT OGPN / PROJET AFFILIÉ ============
         // Comptés, pas cachés : un site qui mentionne notre bot dans son
         // robots.txt a pris position à notre égard (autorisé, bloqué...),
@@ -245,7 +399,8 @@ final class Config
         ['pattern' => 'meta-externalads', 'category' => 'data_reseller'],
         ['pattern' => 'mistralai-index', 'category' => 'data_reseller'],
         ['pattern' => 'mozilla-tabstack', 'category' => 'data_reseller'],
-        ['pattern' => 'netestate imprint crawler', 'category' => 'data_reseller'],
+        ['pattern' => 'netestate', 'category' => 'data_reseller'], // couvre toutes les variantes (imprint crawler, ne crawler...)
+        ['pattern' => 'discobot', 'category' => 'other_service'], // indexeur propre aux forums Discourse
         ['pattern' => 'pangubot', 'category' => 'model_training'], // ai-robots-txt (CC-BY-SA) prime sur Piperic ici, corrigé le 2026-08-03
         ['pattern' => 'querit', 'category' => 'data_reseller'], // couvre querit-searchbot, queritbot
         ['pattern' => 'sbintuitionsbot', 'category' => 'data_reseller'],
@@ -290,6 +445,41 @@ final class Config
         ['pattern' => 'webzip', 'category' => 'archiving_tool'],
         ['pattern' => 'httrack', 'category' => 'archiving_tool'],
         ['pattern' => 'copytrack', 'category' => 'archiving_tool'], // traque de réutilisation d'images, proche de l'archivage
+        ['pattern' => 'webstripper', 'category' => 'archiving_tool'],
+        ['pattern' => 'sitesnagger', 'category' => 'archiving_tool'],
+        // ============ CADRES DE SCRAPING GÉNÉRIQUES (ajout) ============
+        ['pattern' => 'larbin', 'category' => 'scraping_framework'],
+        // ============ INDEXATION (ajout) ============
+        ['pattern' => 'gigabot', 'category' => 'search_index'], // Gigablast, moteur de recherche
+        ['pattern' => 'psbot', 'category' => 'search_index'], // Picsearch, moteur de recherche d'images
+        ['pattern' => 'szukacz', 'category' => 'search_index'], // moteur de recherche polonais
+        // ============ REVENDEUR DE DONNÉES (ajout) ============
+        ['pattern' => 'similarwebbot', 'category' => 'data_reseller'], // SimilarWeb, intelligence concurrentielle
+        ['pattern' => 'zoominfobot', 'category' => 'data_reseller'], // ZoomInfo, données B2B
+        ['pattern' => 'pricebot', 'category' => 'data_reseller'], // surveillance de prix
+        // ============ OUTILS SEO (ajout) ============
+        ['pattern' => 'ezooms', 'category' => 'seo_tool'],
+        ['pattern' => 'siteauditbot', 'category' => 'seo_tool'],
+        ['pattern' => 'spbot', 'category' => 'seo_tool'], // SEOprofiler
+        ['pattern' => 'splitsignalbot', 'category' => 'seo_tool'],
+        ['pattern' => 'serpstatbot', 'category' => 'seo_tool'],
+        ['pattern' => 'sistrix', 'category' => 'seo_tool'],
+        // ============ AUTRES SERVICES IDENTIFIABLES (ajout) ============
+        ['pattern' => 'turnitinbot', 'category' => 'other_service'], // Turnitin, détection de plagiat académique
+        ['pattern' => 'copyrightcheck', 'category' => 'other_service'],
+        ['pattern' => 'linkwalker', 'category' => 'other_service'],
+        // ============ MOISSONNEURS D'ADRESSES E-MAIL ============
+        // Catégorie à part : ni IA, ni SEO -- objectif typiquement la
+        // collecte d'adresses e-mail à des fins de prospection/spam. Signal
+        // de gouvernance réel (un site qui s'en protège activement), donc
+        // gardé visible plutôt que noyé dans "non catégorisé".
+        ['pattern' => 'emailsiphon', 'category' => 'email_harvester'],
+        ['pattern' => 'emailwolf', 'category' => 'email_harvester'],
+        ['pattern' => 'emailcollector', 'category' => 'email_harvester'],
+        ['pattern' => 'cherrypicker', 'category' => 'email_harvester'],
+        // (motif générique "adsbot" volontairement omis -- déjà couvert
+        // par 'adsbot-google'/'oai-adsbot' plus haut, un motif générique
+        // supplémentaire n'aurait rien apporté de plus)
         // ============ AUTRES SERVICES IDENTIFIABLES (hors IA, hors SEO) ============
         ['pattern' => 'superfeedr', 'category' => 'other_service'], // agrégateur de flux RSS/Atom
         ['pattern' => 'robtexbot', 'category' => 'other_service'], // renseignement réseau/DNS
@@ -322,9 +512,9 @@ final class Config
         'slurp', // Yahoo
         'sogou',
         'ahrefsbot', 'semrushbot', 'mj12bot', 'dotbot', 'seznambot', 'blexbot', 'petalbot',
-        'facebookexternalhit', 'twitterbot', 'linkedinbot', 'pinterestbot', 'whatsapp', 'telegrambot', 'discordbot',
+        'facebookexternalhit', 'twitterbot', 'linkedinbot', 'pinterestbot', 'pinterest', 'whatsapp', 'telegrambot', 'discordbot',
         'applebot', // distinct d'Applebot-Extended, qui LUI est dans AI_BOTS
-        'archive.org_bot', 'ia_archiver',
+        'archive.org_bot', 'ia_archiver', 'googlebot-mobile',
         // -- Outils de téléchargement génériques -- pas des "bots" d'un
         // service identifiable, juste des logiciels que n'importe qui peut
         // lancer depuis son poste (contrairement à webzip/webcopier/httrack,
@@ -336,6 +526,8 @@ final class Config
         'wget', 'curl', 'python-urllib', 'python-requests', 'go-http-client',
         'teleport pro', 'go!zilla', 'gozilla', 'mygetright', 'getright',
         'flashget', 'reget', 'httpunit', 'skipfish', 'sf/2 (skipfish)',
+        'teleport', 'teleportpro', 'offline explorer', 'netants', 'zeus',
+        'webreaper', 'lexibot', 'websauger', 'msiecrawler',
     ];
 
     /**

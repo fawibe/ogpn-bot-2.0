@@ -1918,6 +1918,14 @@ final class Scanner
         // autant de "bots" distincts. Repéré le 2026-08 en creusant un
         // écart de comptage lors du nettoyage rétroactif de la base.
         $agent = preg_replace('/\/[\d.+_-]+[a-z0-9.]*$/i', '', $agent) ?? $agent;
+        // Version séparée par un espace ou un tiret ("httrack 3.0" ->
+        // "httrack", "twengabot-2.0" -> "twengabot") -- seulement si ce qui
+        // suit est PUREMENT numérique (chiffres/points, "v" optionnel en
+        // préfixe, une seule lettre finale type "1.1c") : ne touche jamais
+        // à un suffixe contenant d'autres lettres ("twengabot-discover",
+        // "ai2bot-dolma" restent intacts, ce sont des gammes/noms de corpus
+        // distincts, pas des numéros de version.
+        $agent = preg_replace('/[\s-]+v?\.?\d+(\.\d+)*[a-z]?$/i', '', $agent) ?? $agent;
 
         return trim($agent);
     }
